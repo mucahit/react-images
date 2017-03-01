@@ -1690,9 +1690,9 @@ var Lightbox = (function (_Component) {
 		_classCallCheck(this, Lightbox);
 
 		_get(Object.getPrototypeOf(Lightbox.prototype), 'constructor', this).call(this);
-		this.state = { rotate: 0 };
+		this.state = { rotate: 0, isZoomed: false };
 
-		_utils.bindFunctions.call(this, ['gotoNext', 'gotoPrev', 'rotate', 'handleKeyboardInput']);
+		_utils.bindFunctions.call(this, ['gotoNext', 'gotoPrev', 'rotate', 'zoom', 'handleKeyboardInput']);
 	}
 
 	_createClass(Lightbox, [{
@@ -1705,8 +1705,23 @@ var Lightbox = (function (_Component) {
 	}, {
 		key: 'componentDidMount',
 		value: function componentDidMount() {
+			var self = this;
+
 			if (this.props.isOpen && this.props.enableKeyboardInput) {
 				window.addEventListener('keydown', this.handleKeyboardInput);
+			}
+
+			if (this.props.zoom) {
+				document.addEventListener('mousemove', function (event) {
+					var posY = event.clientY;
+					if (self.state.isZoomed) {
+						if (posY <= window.innerHeight / 2) {
+							self.setState({ margin: window.innerHeight - posY + 'px 0px 0px 0px' });
+						} else {
+							self.setState({ margin: '-' + posY / 1.3 + 'px 0px 0px 0px' });
+						}
+					}
+				});
 			}
 		}
 	}, {
@@ -1815,10 +1830,29 @@ var Lightbox = (function (_Component) {
 	}, {
 		key: 'rotate',
 		value: function rotate() {
+			if (event) {
+				event.preventDefault();
+				event.stopPropagation();
+			}
 			if (this.state.rotate === 360) {
 				this.setState({ rotate: 90 });
 			} else {
 				this.setState({ rotate: this.state.rotate + 90 });
+			}
+		}
+	}, {
+		key: 'zoom',
+		value: function zoom() {
+			if (this.state.isZoomed) {
+				this.setState({
+					isZoomed: false,
+					margin: 0
+				});
+			} else {
+				this.setState({
+					isZoomed: true,
+					margin: 0
+				});
 			}
 		}
 
@@ -1926,20 +1960,24 @@ var Lightbox = (function (_Component) {
 			var thumbnailsSize = showThumbnails ? _theme2['default'].thumbnail.size : 0;
 			var heightOffset = _theme2['default'].header.height + _theme2['default'].footer.height + thumbnailsSize + _theme2['default'].container.gutter.vertical + 'px';
 
+			console.log(onClickImage);
+
 			return _react2['default'].createElement(
 				'figure',
 				{ className: (0, _aphroditeNoImportant.css)(classes.figure) },
 				_react2['default'].createElement('img', {
 					className: (0, _aphroditeNoImportant.css)(classes.image),
-					onClick: !!onClickImage && onClickImage,
+					onClick: onClickImage ? onClickImage : this.props.zoom ? this.zoom : null,
 					sizes: sizes,
 					alt: image.alt,
 					src: image.src,
 					srcSet: srcset,
 					style: {
-						cursor: this.props.onClickImage ? 'pointer' : 'auto',
-						maxHeight: 'calc(100vh - ' + heightOffset + ')',
-						transform: 'rotate(' + this.state.rotate + 'deg)'
+						cursor: this.props.zoom ? !this.state.isZoomed ? 'zoom-in' : 'zoom-out' : onClickImage ? 'pointer' : 'auto',
+						maxHeight: !this.state.isZoomed ? 'calc(100vh - ' + heightOffset + ')' : '120vh',
+						transform: !this.state.isZoomed ? 'scale(1) rotate(' + this.state.rotate + 'deg)' : 'scale(1.4) rotate(' + this.state.rotate + 'deg)',
+						margin: this.state.margin,
+						transition: 'all .1s'
 					}
 				}),
 				_react2['default'].createElement(_componentsFooter2['default'], {
@@ -2027,7 +2065,8 @@ Lightbox.defaultProps = {
 	showRotateButton: true,
 	theme: {},
 	thumbnailOffset: 2,
-	width: 1024
+	width: 1024,
+	zoom: false
 };
 Lightbox.childContextTypes = {
 	theme: _react.PropTypes.object.isRequired
