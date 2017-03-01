@@ -85,13 +85,13 @@ class Gallery extends Component {
 					currentImage={this.state.currentImage}
 					images={this.props.images}
 					isOpen={this.state.lightboxIsOpen}
-					onClickImage={this.handleClickImage}
 					onClickNext={this.gotoNext}
 					onClickPrev={this.gotoPrevious}
 					onClickThumbnail={this.gotoImage}
 					onClose={this.closeLightbox}
 					showThumbnails={this.props.showThumbnails}
 					theme={this.props.theme}
+					zoom={1}
 				/>
 			</div>
 		);
