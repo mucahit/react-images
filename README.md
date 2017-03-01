@@ -133,4 +133,5 @@ rightArrowTitle | string | ' Next (Right arrow key) ' | Customize right arrow ti
 showCloseButton | bool  | true | Optionally display a close "X" button in top right corner
 showImageCount | bool  | true | Optionally display image index, e.g., "3 of 20"
 showRotateButton | bool | true | Optionally display a rotate button in top left corner
+zoom | bool | false | Optionally zoomable images
 width | number  | 1024 | Maximum width of the carousel; defaults to 1024px

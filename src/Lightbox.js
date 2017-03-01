@@ -15,12 +15,13 @@ import { bindFunctions, canUseDom } from './utils';
 class Lightbox extends Component {
 	constructor () {
 		super();
-		this.state = { rotate: 0 };
+		this.state = { rotate: 0, isZoomed: false };
 
 		bindFunctions.call(this, [
 			'gotoNext',
 			'gotoPrev',
 			'rotate',
+			'zoom',
 			'handleKeyboardInput',
 		]);
 	}
@@ -30,9 +31,25 @@ class Lightbox extends Component {
 		};
 	}
 	componentDidMount () {
+		let self = this;
+
 		if (this.props.isOpen && this.props.enableKeyboardInput) {
 			window.addEventListener('keydown', this.handleKeyboardInput);
 		}
+
+		if (this.props.zoom) {
+			document.addEventListener('mousemove', function (event) {
+				let posY = event.clientY;
+				if (self.state.isZoomed) {
+					if (posY <= window.innerHeight / 2) {
+						self.setState({ margin: `${window.innerHeight - posY}px 0px 0px 0px` });
+					} else {
+						self.setState({ margin: `-${posY / 1.3}px 0px 0px 0px` });
+					}
+				}
+			});
+		}
+
 	}
 	componentWillReceiveProps (nextProps) {
 		if (!canUseDom) return;
@@ -138,6 +155,20 @@ class Lightbox extends Component {
 		}
 
 	}
+	zoom () {
+		if (this.state.isZoomed) {
+			this.setState({
+				isZoomed: false,
+				margin: 0,
+			});
+		} else {
+			this.setState({
+				isZoomed: true,
+				margin: 0,
+			});
+		}
+
+	}
 
 	// ==============================
 	// RENDERERS
@@ -239,6 +270,8 @@ class Lightbox extends Component {
 		const thumbnailsSize = showThumbnails ? theme.thumbnail.size : 0;
 		const heightOffset = `${theme.header.height + theme.footer.height + thumbnailsSize + (theme.container.gutter.vertical)}px`;
 
+		console.log(onClickImage);
+
 		return (
 			<figure className={css(classes.figure)}>
 				{/*
@@ -248,15 +281,17 @@ class Lightbox extends Component {
 				*/}
 				<img
 					className={css(classes.image)}
-					onClick={!!onClickImage && onClickImage}
+					onClick={onClickImage ? onClickImage : this.props.zoom ? this.zoom : null}
 					sizes={sizes}
 					alt={image.alt}
 					src={image.src}
 					srcSet={srcset}
 					style={{
-						cursor: this.props.onClickImage ? 'pointer' : 'auto',
-						maxHeight: `calc(100vh - ${heightOffset})`,
-						transform: `rotate(${this.state.rotate}deg)`,
+						cursor: this.props.zoom ? !this.state.isZoomed ? 'zoom-in' : 'zoom-out' : onClickImage ? 'pointer' : 'auto',
+						maxHeight: !this.state.isZoomed ? `calc(100vh - ${heightOffset})` : '120vh',
+						transform: !this.state.isZoomed ? `scale(1) rotate(${this.state.rotate}deg)` : `scale(1.4) rotate(${this.state.rotate}deg)`,
+						margin: this.state.margin,
+						transition: 'all .1s',
 					}}
 				/>
 				<Footer
@@ -338,6 +373,7 @@ Lightbox.defaultProps = {
 	theme: {},
 	thumbnailOffset: 2,
 	width: 1024,
+	zoom: false,
 };
 Lightbox.childContextTypes = {
 	theme: PropTypes.object.isRequired,
