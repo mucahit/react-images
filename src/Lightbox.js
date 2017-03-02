@@ -143,11 +143,10 @@ class Lightbox extends Component {
 		return false;
 
 	}
-	rotate () {
-		if (event) {
-			event.preventDefault();
-			event.stopPropagation();
-		}
+	rotate (event) {
+
+		event.preventDefault();
+		event.stopPropagation();
 		if (this.state.rotate === 360) {
 			this.setState({ rotate: 90 });
 		} else {
@@ -155,11 +154,10 @@ class Lightbox extends Component {
 		}
 
 	}
-	zoom () {
-		if (event) {
-			event.preventDefault();
-			event.stopPropagation();
-		}
+	zoom (event) {
+
+		event.preventDefault();
+		event.stopPropagation();
 		if (this.state.isZoomed) {
 			this.setState({
 				isZoomed: false,

@@ -1829,11 +1829,10 @@ var Lightbox = (function (_Component) {
 		}
 	}, {
 		key: 'rotate',
-		value: function rotate() {
-			if (event) {
-				event.preventDefault();
-				event.stopPropagation();
-			}
+		value: function rotate(event) {
+
+			event.preventDefault();
+			event.stopPropagation();
 			if (this.state.rotate === 360) {
 				this.setState({ rotate: 90 });
 			} else {
@@ -1842,11 +1841,10 @@ var Lightbox = (function (_Component) {
 		}
 	}, {
 		key: 'zoom',
-		value: function zoom() {
-			if (event) {
-				event.preventDefault();
-				event.stopPropagation();
-			}
+		value: function zoom(event) {
+
+			event.preventDefault();
+			event.stopPropagation();
 			if (this.state.isZoomed) {
 				this.setState({
 					isZoomed: false,
