@@ -272,8 +272,6 @@ class Lightbox extends Component {
 		const thumbnailsSize = showThumbnails ? theme.thumbnail.size : 0;
 		const heightOffset = `${theme.header.height + theme.footer.height + thumbnailsSize + (theme.container.gutter.vertical)}px`;
 
-		console.log(onClickImage);
-
 		return (
 			<figure className={css(classes.figure)}>
 				{/*

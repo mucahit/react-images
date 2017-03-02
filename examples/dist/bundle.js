@@ -3049,8 +3049,6 @@ var Lightbox = (function (_Component) {
 			var thumbnailsSize = showThumbnails ? _theme2['default'].thumbnail.size : 0;
 			var heightOffset = _theme2['default'].header.height + _theme2['default'].footer.height + thumbnailsSize + _theme2['default'].container.gutter.vertical + 'px';
 
-			console.log(onClickImage);
-
 			return _react2['default'].createElement(
 				'figure',
 				{ className: (0, _aphroditeNoImportant.css)(classes.figure) },
