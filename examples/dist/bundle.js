@@ -2930,6 +2930,10 @@ var Lightbox = (function (_Component) {
 	}, {
 		key: 'zoom',
 		value: function zoom() {
+			if (event) {
+				event.preventDefault();
+				event.stopPropagation();
+			}
 			if (this.state.isZoomed) {
 				this.setState({
 					isZoomed: false,

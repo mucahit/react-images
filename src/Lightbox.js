@@ -156,6 +156,10 @@ class Lightbox extends Component {
 
 	}
 	zoom () {
+		if (event) {
+			event.preventDefault();
+			event.stopPropagation();
+		}
 		if (this.state.isZoomed) {
 			this.setState({
 				isZoomed: false,
