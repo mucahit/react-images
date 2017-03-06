@@ -279,21 +279,36 @@ class Lightbox extends Component {
 					https://fb.me/react-unknown-prop is resolved
 					<Swipeable onSwipedLeft={this.gotoNext} onSwipedRight={this.gotoPrev} />
 				*/}
-				<img
-					className={css(classes.image)}
-					onClick={onClickImage ? onClickImage : this.props.zoom ? this.zoom : null}
-					sizes={sizes}
-					alt={image.alt}
-					src={image.src}
-					srcSet={srcset}
-					style={{
-						cursor: this.props.zoom ? !this.state.isZoomed ? 'zoom-in' : 'zoom-out' : onClickImage ? 'pointer' : 'auto',
-						maxHeight: !this.state.isZoomed ? `calc(100vh - ${heightOffset})` : '120vh',
-						transform: !this.state.isZoomed ? `scale(1) rotate(${this.state.rotate}deg)` : `scale(1.4) rotate(${this.state.rotate}deg)`,
-						margin: this.state.margin,
-						transition: 'all .1s',
-					}}
-				/>
+				<div className={css(classes.imageWrapper)}>
+					<img
+						className={css(classes.image)}
+						onClick={onClickImage ? onClickImage : this.props.zoom ? this.zoom : null}
+						alt={image.alt}
+						src={image.src}
+						srcSet={srcset}
+						style={{
+							cursor: this.props.zoom ? !this.state.isZoomed ? 'zoom-in' : 'zoom-out' : onClickImage ? 'pointer' : 'auto',
+							maxHeight: !this.state.isZoomed ? '630px' : '120vh',
+							maxWidth: !this.state.isZoomed ? '574px' : '120vh',
+							transform: !this.state.isZoomed ? `scale(1) rotate(${this.state.rotate}deg)` : `scale(1.4) rotate(${this.state.rotate}deg)`,
+							margin: this.state.margin,
+							transition: 'all .1s',
+							display: 'inline-block',
+						}}
+					/>
+					{
+						this.props.content ? 
+							<figcaption
+								className={css(classes.figcaption)}
+								style={{
+									display: !this.state.isZoomed ? 'inline-block' : 'none',
+								}}
+							>
+								{this.props.children}
+							</figcaption>
+						: ''
+					}
+				</div>
 				<Footer
 					caption={images[currentImage].caption}
 					countCurrent={currentImage + 1}
@@ -374,6 +389,7 @@ Lightbox.defaultProps = {
 	thumbnailOffset: 2,
 	width: 1024,
 	zoom: false,
+	content: false,
 };
 Lightbox.childContextTypes = {
 	theme: PropTypes.object.isRequired,
@@ -386,6 +402,12 @@ const classes = StyleSheet.create({
 	figure: {
 		margin: 0, // remove browser default
 	},
+	imageWrapper: {
+		display: 'flex',
+		alignItems: 'center',
+		justifyContent: 'center',
+		background: '#000',
+	},
 	image: {
 		display: 'block', // removes browser default gutter
 		height: 'auto',
@@ -395,6 +417,13 @@ const classes = StyleSheet.create({
 		// disable user select
 		WebkitTouchCallout: 'none',
 		userSelect: 'none',
+	},
+	figcaption: {
+		background: '#fff',
+		width: '450px',
+		verticalAlign: 'top',
+		height: '630px',
+		overflow: 'auto',
 	},
 });
 

@@ -346,18 +346,27 @@ var Gallery = (function (_Component) {
 					this.props.subheading
 				),
 				this.renderGallery(),
-				_react2['default'].createElement(_reactImages2['default'], {
-					currentImage: this.state.currentImage,
-					images: this.props.images,
-					isOpen: this.state.lightboxIsOpen,
-					onClickNext: this.gotoNext,
-					onClickPrev: this.gotoPrevious,
-					onClickThumbnail: this.gotoImage,
-					onClose: this.closeLightbox,
-					showThumbnails: this.props.showThumbnails,
-					theme: this.props.theme,
-					zoom: 1
-				})
+				_react2['default'].createElement(
+					_reactImages2['default'],
+					{
+						currentImage: this.state.currentImage,
+						images: this.props.images,
+						isOpen: this.state.lightboxIsOpen,
+						onClickNext: this.gotoNext,
+						onClickPrev: this.gotoPrevious,
+						onClickThumbnail: this.gotoImage,
+						onClose: this.closeLightbox,
+						showThumbnails: this.props.showThumbnails,
+						theme: this.props.theme,
+						zoom: 1,
+						content: 1
+					},
+					_react2['default'].createElement(
+						'p',
+						null,
+						'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quo debitis magnam veritatis neque laborum minus rem id illo ipsa, fugiat, aliquam placeat architecto amet reprehenderit iure eveniet consequatur dignissimos ea.'
+					)
+				)
 			);
 		}
 	}]);
