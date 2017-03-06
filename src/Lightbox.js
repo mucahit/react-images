@@ -171,6 +171,12 @@ class Lightbox extends Component {
 		}
 
 	}
+	eventPreventDefault (event) {
+
+		event.preventDefault();
+		event.stopPropagation();
+
+	}
 
 	// ==============================
 	// RENDERERS
@@ -303,6 +309,7 @@ class Lightbox extends Component {
 								style={{
 									display: !this.state.isZoomed ? 'inline-block' : 'none',
 								}}
+								onClick={this.eventPreventDefault}
 							>
 								{this.props.children}
 							</figcaption>
