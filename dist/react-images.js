@@ -1857,6 +1857,13 @@ var Lightbox = (function (_Component) {
 				});
 			}
 		}
+	}, {
+		key: 'eventPreventDefault',
+		value: function eventPreventDefault(event) {
+
+			event.preventDefault();
+			event.stopPropagation();
+		}
 
 		// ==============================
 		// RENDERERS
@@ -1990,7 +1997,8 @@ var Lightbox = (function (_Component) {
 							className: (0, _aphroditeNoImportant.css)(classes.figcaption),
 							style: {
 								display: !this.state.isZoomed ? 'inline-block' : 'none'
-							}
+							},
+							onClick: this.eventPreventDefault
 						},
 						this.props.children
 					) : ''
