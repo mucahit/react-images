@@ -91,8 +91,12 @@ class Gallery extends Component {
 					onClose={this.closeLightbox}
 					showThumbnails={this.props.showThumbnails}
 					theme={this.props.theme}
+					backdropClosesModal={true}
 					zoom={1}
-				/>
+					content={1}
+				>
+				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime ipsum dolores ut incidunt perspiciatis dignissimos culpa consequatur ducimus quia, asperiores aliquam earum error nulla ipsam a similique, aut et rerum?</p>
+				</Lightbox>
 			</div>
 		);
 	}

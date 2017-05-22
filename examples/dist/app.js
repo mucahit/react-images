@@ -358,13 +358,14 @@ var Gallery = (function (_Component) {
 						onClose: this.closeLightbox,
 						showThumbnails: this.props.showThumbnails,
 						theme: this.props.theme,
+						backdropClosesModal: true,
 						zoom: 1,
 						content: 1
 					},
 					_react2['default'].createElement(
 						'p',
 						null,
-						'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quo debitis magnam veritatis neque laborum minus rem id illo ipsa, fugiat, aliquam placeat architecto amet reprehenderit iure eveniet consequatur dignissimos ea.'
+						'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime ipsum dolores ut incidunt perspiciatis dignissimos culpa consequatur ducimus quia, asperiores aliquam earum error nulla ipsam a similique, aut et rerum?'
 					)
 				)
 			);

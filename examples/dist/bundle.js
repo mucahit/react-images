@@ -1638,6 +1638,10 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
 var _aphroditeNoImportant = require('aphrodite/no-important');
 
 var _theme = require('../theme');
@@ -1675,16 +1679,16 @@ function Arrow(_ref, _ref2) {
 };
 
 Arrow.propTypes = {
-	direction: _react.PropTypes.oneOf(['left', 'right']),
-	icon: _react.PropTypes.string,
-	onClick: _react.PropTypes.func.isRequired,
-	size: _react.PropTypes.oneOf(['medium', 'small']).isRequired
+	direction: _propTypes2['default'].oneOf(['left', 'right']),
+	icon: _propTypes2['default'].string,
+	onClick: _propTypes2['default'].func.isRequired,
+	size: _propTypes2['default'].oneOf(['medium', 'small']).isRequired
 };
 Arrow.defaultProps = {
 	size: 'medium'
 };
 Arrow.contextTypes = {
-	theme: _react.PropTypes.object.isRequired
+	theme: _propTypes2['default'].object.isRequired
 };
 
 var defaultStyles = {
@@ -1734,7 +1738,7 @@ var defaultStyles = {
 
 module.exports = Arrow;
 
-},{"../theme":41,"../utils":45,"./Icon":31,"aphrodite/no-important":6,"react":undefined}],28:[function(require,module,exports){
+},{"../theme":41,"../utils":45,"./Icon":31,"aphrodite/no-important":6,"prop-types":undefined,"react":undefined}],28:[function(require,module,exports){
 'use strict';
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -1746,6 +1750,10 @@ function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in ob
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _aphroditeNoImportant = require('aphrodite/no-important');
 
@@ -1768,7 +1776,7 @@ function Container(_ref, _ref2) {
 };
 
 Container.contextTypes = {
-	theme: _react.PropTypes.object.isRequired
+	theme: _propTypes2['default'].object.isRequired
 };
 
 var defaultStyles = {
@@ -1793,7 +1801,7 @@ var defaultStyles = {
 
 module.exports = Container;
 
-},{"../theme":41,"../utils":45,"aphrodite/no-important":6,"react":undefined}],29:[function(require,module,exports){
+},{"../theme":41,"../utils":45,"aphrodite/no-important":6,"prop-types":undefined,"react":undefined}],29:[function(require,module,exports){
 'use strict';
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -1805,6 +1813,10 @@ function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in ob
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _aphroditeNoImportant = require('aphrodite/no-important');
 
@@ -1850,14 +1862,14 @@ function Footer(_ref, _ref2) {
 };
 
 Footer.propTypes = {
-	caption: _react.PropTypes.oneOfType([_react.PropTypes.string, _react.PropTypes.element]),
-	countCurrent: _react.PropTypes.number,
-	countSeparator: _react.PropTypes.string,
-	countTotal: _react.PropTypes.number,
-	showCount: _react.PropTypes.bool
+	caption: _propTypes2['default'].oneOfType([_propTypes2['default'].string, _propTypes2['default'].element]),
+	countCurrent: _propTypes2['default'].number,
+	countSeparator: _propTypes2['default'].string,
+	countTotal: _propTypes2['default'].number,
+	showCount: _propTypes2['default'].bool
 };
 Footer.contextTypes = {
-	theme: _react.PropTypes.object.isRequired
+	theme: _propTypes2['default'].object.isRequired
 };
 
 var defaultStyles = {
@@ -1886,7 +1898,7 @@ var defaultStyles = {
 
 module.exports = Footer;
 
-},{"../theme":41,"../utils":45,"aphrodite/no-important":6,"react":undefined}],30:[function(require,module,exports){
+},{"../theme":41,"../utils":45,"aphrodite/no-important":6,"prop-types":undefined,"react":undefined}],30:[function(require,module,exports){
 'use strict';
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -1898,6 +1910,10 @@ function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in ob
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _aphroditeNoImportant = require('aphrodite/no-important');
 
@@ -1952,12 +1968,12 @@ function Header(_ref, _ref2) {
 };
 
 Header.propTypes = {
-	customControls: _react.PropTypes.array,
-	onClose: _react.PropTypes.func.isRequired,
-	showCloseButton: _react.PropTypes.bool
+	customControls: _propTypes2['default'].array,
+	onClose: _propTypes2['default'].func.isRequired,
+	showCloseButton: _propTypes2['default'].bool
 };
 Header.contextTypes = {
-	theme: _react.PropTypes.object.isRequired
+	theme: _propTypes2['default'].object.isRequired
 };
 
 var defaultStyles = {
@@ -2000,7 +2016,7 @@ var defaultStyles = {
 
 module.exports = Header;
 
-},{"../theme":41,"../utils":45,"./Icon":31,"aphrodite/no-important":6,"react":undefined}],31:[function(require,module,exports){
+},{"../theme":41,"../utils":45,"./Icon":31,"aphrodite/no-important":6,"prop-types":undefined,"react":undefined}],31:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -2016,6 +2032,10 @@ function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in ob
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _icons = require('../icons');
 
@@ -2035,8 +2055,8 @@ var Icon = function Icon(_ref) {
 };
 
 Icon.propTypes = {
-	fill: _react.PropTypes.string,
-	type: _react.PropTypes.oneOf(Object.keys(_icons2['default']))
+	fill: _propTypes2['default'].string,
+	type: _propTypes2['default'].oneOf(Object.keys(_icons2['default']))
 };
 Icon.defaultProps = {
 	fill: 'white'
@@ -2045,7 +2065,7 @@ Icon.defaultProps = {
 exports['default'] = Icon;
 module.exports = exports['default'];
 
-},{"../icons":39,"react":undefined}],32:[function(require,module,exports){
+},{"../icons":39,"prop-types":undefined,"react":undefined}],32:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -2067,6 +2087,10 @@ function _inherits(subClass, superClass) { if (typeof superClass !== 'function' 
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _aphroditeNoImportant = require('aphrodite/no-important');
 
@@ -2268,14 +2292,14 @@ var PaginatedThumbnails = (function (_Component) {
 exports['default'] = PaginatedThumbnails;
 
 PaginatedThumbnails.propTypes = {
-	currentImage: _react.PropTypes.number,
-	images: _react.PropTypes.array,
-	offset: _react.PropTypes.number,
-	onClickThumbnail: _react.PropTypes.func.isRequired
+	currentImage: _propTypes2['default'].number,
+	images: _propTypes2['default'].array,
+	offset: _propTypes2['default'].number,
+	onClickThumbnail: _propTypes2['default'].func.isRequired
 };
 module.exports = exports['default'];
 
-},{"../theme":41,"./Arrow":27,"./Thumbnail":35,"aphrodite/no-important":6,"react":undefined}],33:[function(require,module,exports){
+},{"../theme":41,"./Arrow":27,"./Thumbnail":35,"aphrodite/no-important":6,"prop-types":undefined,"react":undefined}],33:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -2286,11 +2310,17 @@ var _createClass = (function () { function defineProperties(target, props) { for
 
 var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var _react = require('react');
+
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
 
 // Pass the Lightbox context through to the Portal's descendents
 // StackOverflow discussion http://goo.gl/oclrJ9
@@ -2322,16 +2352,16 @@ var PassContext = (function (_Component) {
 ;
 
 PassContext.propTypes = {
-	context: _react.PropTypes.object.isRequired
+	context: _propTypes2['default'].object.isRequired
 };
 PassContext.childContextTypes = {
-	theme: _react.PropTypes.object
+	theme: _propTypes2['default'].object
 };
 
 exports['default'] = PassContext;
 module.exports = exports['default'];
 
-},{"react":undefined}],34:[function(require,module,exports){
+},{"prop-types":undefined,"react":undefined}],34:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -2353,6 +2383,10 @@ function _inherits(subClass, superClass) { if (typeof superClass !== 'function' 
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _reactAddonsCssTransitionGroup = require('react-addons-css-transition-group');
 
@@ -2427,11 +2461,11 @@ var Portal = (function (_Component) {
 exports['default'] = Portal;
 
 Portal.contextTypes = {
-	theme: _react.PropTypes.object.isRequired
+	theme: _propTypes2['default'].object.isRequired
 };
 module.exports = exports['default'];
 
-},{"./PassContext":33,"react":undefined,"react-addons-css-transition-group":undefined,"react-dom":undefined}],35:[function(require,module,exports){
+},{"./PassContext":33,"prop-types":undefined,"react":undefined,"react-addons-css-transition-group":undefined,"react-dom":undefined}],35:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -2443,6 +2477,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
 
 var _aphroditeNoImportant = require('aphrodite/no-important');
 
@@ -2475,15 +2513,15 @@ function Thumbnail(_ref, _ref2) {
 }
 
 Thumbnail.propTypes = {
-	active: _react.PropTypes.bool,
-	index: _react.PropTypes.number,
-	onClick: _react.PropTypes.func.isRequired,
-	src: _react.PropTypes.string,
-	thumbnail: _react.PropTypes.string
+	active: _propTypes2['default'].bool,
+	index: _propTypes2['default'].number,
+	onClick: _propTypes2['default'].func.isRequired,
+	src: _propTypes2['default'].string,
+	thumbnail: _propTypes2['default'].string
 };
 
 Thumbnail.contextTypes = {
-	theme: _react.PropTypes.object.isRequired
+	theme: _propTypes2['default'].object.isRequired
 };
 
 var defaultStyles = {
@@ -2507,7 +2545,7 @@ var defaultStyles = {
 exports['default'] = Thumbnail;
 module.exports = exports['default'];
 
-},{"../theme":41,"../utils":45,"aphrodite/no-important":6,"react":undefined}],36:[function(require,module,exports){
+},{"../theme":41,"../utils":45,"aphrodite/no-important":6,"prop-types":undefined,"react":undefined}],36:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2734,6 +2772,10 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
+var _propTypes = require('prop-types');
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
 var _aphroditeNoImportant = require('aphrodite/no-important');
 
 var _reactScrolllock = require('react-scrolllock');
@@ -2944,6 +2986,13 @@ var Lightbox = (function (_Component) {
 				});
 			}
 		}
+	}, {
+		key: 'eventPreventDefault',
+		value: function eventPreventDefault(event) {
+
+			event.preventDefault();
+			event.stopPropagation();
+		}
 
 		// ==============================
 		// RENDERERS
@@ -3052,21 +3101,37 @@ var Lightbox = (function (_Component) {
 			return _react2['default'].createElement(
 				'figure',
 				{ className: (0, _aphroditeNoImportant.css)(classes.figure) },
-				_react2['default'].createElement('img', {
-					className: (0, _aphroditeNoImportant.css)(classes.image),
-					onClick: onClickImage ? onClickImage : this.props.zoom ? this.zoom : null,
-					sizes: sizes,
-					alt: image.alt,
-					src: image.src,
-					srcSet: srcset,
-					style: {
-						cursor: this.props.zoom ? !this.state.isZoomed ? 'zoom-in' : 'zoom-out' : onClickImage ? 'pointer' : 'auto',
-						maxHeight: !this.state.isZoomed ? 'calc(100vh - ' + heightOffset + ')' : '120vh',
-						transform: !this.state.isZoomed ? 'scale(1) rotate(' + this.state.rotate + 'deg)' : 'scale(1.4) rotate(' + this.state.rotate + 'deg)',
-						margin: this.state.margin,
-						transition: 'all .1s'
-					}
-				}),
+				_react2['default'].createElement(
+					'div',
+					{ className: (0, _aphroditeNoImportant.css)(classes.imageWrapper) },
+					_react2['default'].createElement('img', {
+						className: (0, _aphroditeNoImportant.css)(classes.image),
+						onClick: onClickImage ? onClickImage : this.props.zoom ? this.zoom : null,
+						alt: image.alt,
+						src: image.src,
+						srcSet: srcset,
+						style: {
+							cursor: this.props.zoom ? !this.state.isZoomed ? 'zoom-in' : 'zoom-out' : onClickImage ? 'pointer' : 'auto',
+							maxHeight: !this.state.isZoomed ? '630px' : '120vh',
+							maxWidth: !this.state.isZoomed ? '574px' : '120vh',
+							transform: !this.state.isZoomed ? 'scale(1) rotate(' + this.state.rotate + 'deg)' : 'scale(1.4) rotate(' + this.state.rotate + 'deg)',
+							margin: this.state.margin,
+							transition: 'all .1s',
+							display: 'inline-block'
+						}
+					}),
+					this.props.content ? _react2['default'].createElement(
+						'figcaption',
+						{
+							className: (0, _aphroditeNoImportant.css)(classes.figcaption),
+							style: {
+								display: !this.state.isZoomed ? 'inline-block' : 'none'
+							},
+							onClick: this.eventPreventDefault
+						},
+						this.props.children
+					) : ''
+				),
 				_react2['default'].createElement(_componentsFooter2['default'], {
 					caption: images[currentImage].caption,
 					countCurrent: currentImage + 1,
@@ -3110,32 +3175,32 @@ var Lightbox = (function (_Component) {
 })(_react.Component);
 
 Lightbox.propTypes = {
-	backdropClosesModal: _react.PropTypes.bool,
-	closeButtonTitle: _react.PropTypes.string,
-	currentImage: _react.PropTypes.number,
-	customControls: _react.PropTypes.arrayOf(_react.PropTypes.node),
-	enableKeyboardInput: _react.PropTypes.bool,
-	imageCountSeparator: _react.PropTypes.string,
-	images: _react.PropTypes.arrayOf(_react.PropTypes.shape({
-		src: _react.PropTypes.string.isRequired,
-		srcset: _react.PropTypes.array,
-		caption: _react.PropTypes.oneOfType([_react.PropTypes.string, _react.PropTypes.element]),
-		thumbnail: _react.PropTypes.string
+	backdropClosesModal: _propTypes2['default'].bool,
+	closeButtonTitle: _propTypes2['default'].string,
+	currentImage: _propTypes2['default'].number,
+	customControls: _propTypes2['default'].arrayOf(_propTypes2['default'].node),
+	enableKeyboardInput: _propTypes2['default'].bool,
+	imageCountSeparator: _propTypes2['default'].string,
+	images: _propTypes2['default'].arrayOf(_propTypes2['default'].shape({
+		src: _propTypes2['default'].string.isRequired,
+		srcset: _propTypes2['default'].array,
+		caption: _propTypes2['default'].oneOfType([_propTypes2['default'].string, _propTypes2['default'].element]),
+		thumbnail: _propTypes2['default'].string
 	})).isRequired,
-	isOpen: _react.PropTypes.bool,
-	leftArrowTitle: _react.PropTypes.string,
-	onClickImage: _react.PropTypes.func,
-	onClickNext: _react.PropTypes.func,
-	onClickPrev: _react.PropTypes.func,
-	onClose: _react.PropTypes.func.isRequired,
-	preloadNextImage: _react.PropTypes.bool,
-	rightArrowTitle: _react.PropTypes.string,
-	showCloseButton: _react.PropTypes.bool,
-	showImageCount: _react.PropTypes.bool,
-	showThumbnails: _react.PropTypes.bool,
-	theme: _react.PropTypes.object,
-	thumbnailOffset: _react.PropTypes.number,
-	width: _react.PropTypes.number
+	isOpen: _propTypes2['default'].bool,
+	leftArrowTitle: _propTypes2['default'].string,
+	onClickImage: _propTypes2['default'].func,
+	onClickNext: _propTypes2['default'].func,
+	onClickPrev: _propTypes2['default'].func,
+	onClose: _propTypes2['default'].func.isRequired,
+	preloadNextImage: _propTypes2['default'].bool,
+	rightArrowTitle: _propTypes2['default'].string,
+	showCloseButton: _propTypes2['default'].bool,
+	showImageCount: _propTypes2['default'].bool,
+	showThumbnails: _propTypes2['default'].bool,
+	theme: _propTypes2['default'].object,
+	thumbnailOffset: _propTypes2['default'].number,
+	width: _propTypes2['default'].number
 };
 Lightbox.defaultProps = {
 	closeButtonTitle: 'Close (Esc)',
@@ -3153,10 +3218,11 @@ Lightbox.defaultProps = {
 	theme: {},
 	thumbnailOffset: 2,
 	width: 1024,
-	zoom: false
+	zoom: false,
+	content: false
 };
 Lightbox.childContextTypes = {
-	theme: _react.PropTypes.object.isRequired
+	theme: _propTypes2['default'].object.isRequired
 };
 
 var classes = _aphroditeNoImportant.StyleSheet.create({
@@ -3166,6 +3232,12 @@ var classes = _aphroditeNoImportant.StyleSheet.create({
 	figure: {
 		margin: 0 },
 	// remove browser default
+	imageWrapper: {
+		display: 'flex',
+		alignItems: 'center',
+		justifyContent: 'center',
+		background: '#000'
+	},
 	image: {
 		display: 'block', // removes browser default gutter
 		height: 'auto',
@@ -3175,6 +3247,13 @@ var classes = _aphroditeNoImportant.StyleSheet.create({
 		// disable user select
 		WebkitTouchCallout: 'none',
 		userSelect: 'none'
+	},
+	figcaption: {
+		background: '#fff',
+		width: '450px',
+		verticalAlign: 'top',
+		height: '630px',
+		overflow: 'auto'
 	}
 });
 
@@ -3186,4 +3265,4 @@ https://fb.me/react-unknown-prop is resolved
 <Swipeable onSwipedLeft={this.gotoNext} onSwipedRight={this.gotoPrev} />
 */
 
-},{"./components/Arrow":27,"./components/Container":28,"./components/Footer":29,"./components/Header":30,"./components/PaginatedThumbnails":32,"./components/Portal":34,"./theme":41,"./utils":45,"aphrodite/no-important":6,"react":undefined,"react-scrolllock":undefined}]},{},[]);
+},{"./components/Arrow":27,"./components/Container":28,"./components/Footer":29,"./components/Header":30,"./components/PaginatedThumbnails":32,"./components/Portal":34,"./theme":41,"./utils":45,"aphrodite/no-important":6,"prop-types":undefined,"react":undefined,"react-scrolllock":undefined}]},{},[]);

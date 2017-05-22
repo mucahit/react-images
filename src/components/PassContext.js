@@ -1,4 +1,5 @@
-import { Children, Component, PropTypes } from 'react';
+import { Children, Component } from 'react';
+import PropTypes from 'prop-types';
 
 // Pass the Lightbox context through to the Portal's descendents
 // StackOverflow discussion http://goo.gl/oclrJ9
