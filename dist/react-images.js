@@ -1,4 +1,5 @@
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.Lightbox = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function (process){
 'use strict';
 
 var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i['return']) _i['return'](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError('Invalid attempt to destructure non-iterable instance'); } }; })();
@@ -28,10 +29,10 @@ var StyleSheet = {
             var key = _ref2[0];
             var val = _ref2[1];
 
+            var stringVal = JSON.stringify(val);
             return [key, {
-                // TODO(emily): Make a 'production' mode which doesn't prepend
-                // the class name here, to make the generated CSS smaller.
-                _name: key + '_' + (0, _util.hashObject)(val),
+                _len: stringVal.length,
+                _name: process.env.NODE_ENV === 'production' ? (0, _util.hashString)(stringVal) : key + '_' + (0, _util.hashString)(stringVal),
                 _definition: val
             }];
         });
@@ -150,7 +151,8 @@ selectorHandlers /* : SelectorHandler[] */
 };
 
 module.exports = makeExports;
-},{"./inject":3,"./util":7}],2:[function(require,module,exports){
+}).call(this,require('_process'))
+},{"./inject":3,"./util":7,"_process":32}],2:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -501,6 +503,7 @@ selectorHandlers /* : SelectorHandler[] */
 };
 exports.generateCSSRuleset = generateCSSRuleset;
 },{"../lib/staticPrefixData":6,"./ordered-elements":5,"./util":7,"inline-style-prefixer/static/createPrefixer":14}],3:[function(require,module,exports){
+(function (process){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -760,6 +763,16 @@ result /* : ProcessedStyleDefinitions */
     }
 };
 
+// Sum up the lengths of the stringified style definitions (which was saved as _len property)
+// and use modulus to return a single byte hash value.
+// We append this extra byte to the 32bit hash to decrease the chance of hash collisions.
+var getStyleDefinitionsLengthHash = function getStyleDefinitionsLengthHash(styleDefinitions /* : any[] */) {
+    return (/* : string */(styleDefinitions.reduce(function (length, styleDefinition) {
+            return length + (styleDefinition ? styleDefinition._len : 0);
+        }, 0) % 36).toString(36)
+    );
+};
+
 /**
  * Inject styles associated with the passed style definition objects, and return
  * an associated CSS class name.
@@ -785,14 +798,21 @@ selectorHandlers /* : SelectorHandler[] */
     if (processedStyleDefinitions.classNameBits.length === 0) {
         return "";
     }
-    var className = processedStyleDefinitions.classNameBits.join("-o_O-");
+
+    var className = undefined;
+    if (process.env.NODE_ENV === 'production') {
+        className = processedStyleDefinitions.classNameBits.length === 1 ? '_' + processedStyleDefinitions.classNameBits[0] : '_' + (0, _util.hashString)(processedStyleDefinitions.classNameBits.join()) + getStyleDefinitionsLengthHash(styleDefinitions);
+    } else {
+        className = processedStyleDefinitions.classNameBits.join("-o_O-");
+    }
 
     injectStyleOnce(className, '.' + className, processedStyleDefinitions.definitionBits, useImportant, selectorHandlers);
 
     return className;
 };
 exports.injectAndGetClassName = injectAndGetClassName;
-},{"./generate":2,"./ordered-elements":5,"./util":7,"asap":9}],4:[function(require,module,exports){
+}).call(this,require('_process'))
+},{"./generate":2,"./ordered-elements":5,"./util":7,"_process":32,"asap":9}],4:[function(require,module,exports){
 
 // Module with the same interface as the core aphrodite module,
 // except that styles injected do not automatically have !important
@@ -1094,6 +1114,13 @@ prop /* : any */
 };
 
 exports.stringifyAndImportantifyValue = stringifyAndImportantifyValue;
+// Turn a string into a hash string of base-36 values (using letters and numbers)
+var hashString = function hashString(string /* : string */) {
+    return (/* string */(0, _stringHash2['default'])(string).toString(36)
+    );
+};
+
+exports.hashString = hashString;
 // Hash a javascript object using JSON.stringify. This is very fast, about 3
 // microseconds on my computer for a sample object:
 // http://jsperf.com/test-hashfnv32a-hash/5
@@ -1103,7 +1130,7 @@ exports.stringifyAndImportantifyValue = stringifyAndImportantifyValue;
 // ordering of objects. Ben Alpert says that Facebook depends on this, so we
 // can probably depend on this too.
 var hashObject = function hashObject(object /* : ObjectMap */) {
-    return (/* : string */(0, _stringHash2['default'])(JSON.stringify(object)).toString(36)
+    return (/* : string */hashString(JSON.stringify(object))
     );
 };
 
@@ -1120,7 +1147,7 @@ var importantify = function importantify(string /* : string */) {
         string[string.length - 10] === '!' && string.slice(-11) === ' !important' ? string : string + ' !important'
     );
 };
-},{"string-hash":32}],8:[function(require,module,exports){
+},{"string-hash":33}],8:[function(require,module,exports){
 module.exports = require('./lib/no-important.js');
 
 },{"./lib/no-important.js":4}],9:[function(require,module,exports){
@@ -1443,7 +1470,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = isPrefixedValue;
-
 var regex = /-webkit-|-moz-|-ms-/;
 
 function isPrefixedValue(value) {
@@ -1641,13 +1667,13 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = flex;
 var values = {
-  flex: true,
-  'inline-flex': true
+  flex: ['-webkit-box', '-moz-box', '-ms-flexbox', '-webkit-flex', 'flex'],
+  'inline-flex': ['-webkit-inline-box', '-moz-inline-box', '-ms-inline-flexbox', '-webkit-inline-flex', 'inline-flex']
 };
 
 function flex(property, value) {
   if (property === 'display' && values.hasOwnProperty(value)) {
-    return ['-webkit-box', '-moz-box', '-ms-' + value + 'box', '-webkit-' + value, value];
+    return values[value];
   }
 }
 module.exports = exports['default'];
@@ -1672,7 +1698,7 @@ var alternativeProps = {
   order: 'msFlexOrder',
   flexGrow: 'msFlexPositive',
   flexShrink: 'msFlexNegative',
-  flexBasis: 'msPreferredSize'
+  flexBasis: 'msFlexPreferredSize'
 };
 
 function flexboxIE(property, value, style) {
@@ -2000,6 +2026,192 @@ function prefixValue(plugins, property, value, style, metaData) {
 }
 module.exports = exports["default"];
 },{}],32:[function(require,module,exports){
+// shim for using process in browser
+var process = module.exports = {};
+
+// cached from whatever global is present so that test runners that stub it
+// don't break things.  But we need to wrap it in a try catch in case it is
+// wrapped in strict mode code which doesn't define any globals.  It's inside a
+// function because try/catches deoptimize in certain engines.
+
+var cachedSetTimeout;
+var cachedClearTimeout;
+
+function defaultSetTimout() {
+    throw new Error('setTimeout has not been defined');
+}
+function defaultClearTimeout () {
+    throw new Error('clearTimeout has not been defined');
+}
+(function () {
+    try {
+        if (typeof setTimeout === 'function') {
+            cachedSetTimeout = setTimeout;
+        } else {
+            cachedSetTimeout = defaultSetTimout;
+        }
+    } catch (e) {
+        cachedSetTimeout = defaultSetTimout;
+    }
+    try {
+        if (typeof clearTimeout === 'function') {
+            cachedClearTimeout = clearTimeout;
+        } else {
+            cachedClearTimeout = defaultClearTimeout;
+        }
+    } catch (e) {
+        cachedClearTimeout = defaultClearTimeout;
+    }
+} ())
+function runTimeout(fun) {
+    if (cachedSetTimeout === setTimeout) {
+        //normal enviroments in sane situations
+        return setTimeout(fun, 0);
+    }
+    // if setTimeout wasn't available but was latter defined
+    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+        cachedSetTimeout = setTimeout;
+        return setTimeout(fun, 0);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedSetTimeout(fun, 0);
+    } catch(e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+            return cachedSetTimeout.call(null, fun, 0);
+        } catch(e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+            return cachedSetTimeout.call(this, fun, 0);
+        }
+    }
+
+
+}
+function runClearTimeout(marker) {
+    if (cachedClearTimeout === clearTimeout) {
+        //normal enviroments in sane situations
+        return clearTimeout(marker);
+    }
+    // if clearTimeout wasn't available but was latter defined
+    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+        cachedClearTimeout = clearTimeout;
+        return clearTimeout(marker);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedClearTimeout(marker);
+    } catch (e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+            return cachedClearTimeout.call(null, marker);
+        } catch (e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+            return cachedClearTimeout.call(this, marker);
+        }
+    }
+
+
+
+}
+var queue = [];
+var draining = false;
+var currentQueue;
+var queueIndex = -1;
+
+function cleanUpNextTick() {
+    if (!draining || !currentQueue) {
+        return;
+    }
+    draining = false;
+    if (currentQueue.length) {
+        queue = currentQueue.concat(queue);
+    } else {
+        queueIndex = -1;
+    }
+    if (queue.length) {
+        drainQueue();
+    }
+}
+
+function drainQueue() {
+    if (draining) {
+        return;
+    }
+    var timeout = runTimeout(cleanUpNextTick);
+    draining = true;
+
+    var len = queue.length;
+    while(len) {
+        currentQueue = queue;
+        queue = [];
+        while (++queueIndex < len) {
+            if (currentQueue) {
+                currentQueue[queueIndex].run();
+            }
+        }
+        queueIndex = -1;
+        len = queue.length;
+    }
+    currentQueue = null;
+    draining = false;
+    runClearTimeout(timeout);
+}
+
+process.nextTick = function (fun) {
+    var args = new Array(arguments.length - 1);
+    if (arguments.length > 1) {
+        for (var i = 1; i < arguments.length; i++) {
+            args[i - 1] = arguments[i];
+        }
+    }
+    queue.push(new Item(fun, args));
+    if (queue.length === 1 && !draining) {
+        runTimeout(drainQueue);
+    }
+};
+
+// v8 likes predictible objects
+function Item(fun, array) {
+    this.fun = fun;
+    this.array = array;
+}
+Item.prototype.run = function () {
+    this.fun.apply(null, this.array);
+};
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+process.version = ''; // empty string to avoid regexp issues
+process.versions = {};
+
+function noop() {}
+
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+
+process.listeners = function (name) { return [] }
+
+process.binding = function (name) {
+    throw new Error('process.binding is not supported');
+};
+
+process.cwd = function () { return '/' };
+process.chdir = function (dir) {
+    throw new Error('process.chdir is not supported');
+};
+process.umask = function() { return 0; };
+
+},{}],33:[function(require,module,exports){
 "use strict";
 
 function hash(str) {
@@ -2018,7 +2230,7 @@ function hash(str) {
 
 module.exports = hash;
 
-},{}],33:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -2367,7 +2579,7 @@ var Lightbox = (function (_Component) {
 				_react2['default'].createElement(
 					'div',
 					{ className: (0, _aphroditeNoImportant.css)(classes.imageWrapper) },
-					_react2['default'].createElement('img', {
+					this.props.customMedia ? this.props.customMedia : _react2['default'].createElement('img', {
 						className: (0, _aphroditeNoImportant.css)(classes.image),
 						onClick: onClickImage ? onClickImage : this.props.zoom ? this.zoom : null,
 						alt: image.alt,
@@ -2529,7 +2741,7 @@ https://fb.me/react-unknown-prop is resolved
 */
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./components/Arrow":34,"./components/Container":35,"./components/Footer":36,"./components/Header":37,"./components/PaginatedThumbnails":39,"./components/Portal":41,"./theme":48,"./utils":52,"aphrodite/no-important":8,"prop-types":undefined}],34:[function(require,module,exports){
+},{"./components/Arrow":35,"./components/Container":36,"./components/Footer":37,"./components/Header":38,"./components/PaginatedThumbnails":40,"./components/Portal":42,"./theme":49,"./utils":53,"aphrodite/no-important":8,"prop-types":undefined}],35:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -2644,7 +2856,7 @@ var defaultStyles = {
 module.exports = Arrow;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../theme":48,"../utils":52,"./Icon":38,"aphrodite/no-important":8,"prop-types":undefined}],35:[function(require,module,exports){
+},{"../theme":49,"../utils":53,"./Icon":39,"aphrodite/no-important":8,"prop-types":undefined}],36:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -2709,7 +2921,7 @@ var defaultStyles = {
 module.exports = Container;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../theme":48,"../utils":52,"aphrodite/no-important":8,"prop-types":undefined}],36:[function(require,module,exports){
+},{"../theme":49,"../utils":53,"aphrodite/no-important":8,"prop-types":undefined}],37:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -2808,7 +3020,7 @@ var defaultStyles = {
 module.exports = Footer;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../theme":48,"../utils":52,"aphrodite/no-important":8,"prop-types":undefined}],37:[function(require,module,exports){
+},{"../theme":49,"../utils":53,"aphrodite/no-important":8,"prop-types":undefined}],38:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -2928,7 +3140,7 @@ var defaultStyles = {
 module.exports = Header;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../theme":48,"../utils":52,"./Icon":38,"aphrodite/no-important":8,"prop-types":undefined}],38:[function(require,module,exports){
+},{"../theme":49,"../utils":53,"./Icon":39,"aphrodite/no-important":8,"prop-types":undefined}],39:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -2979,7 +3191,7 @@ exports['default'] = Icon;
 module.exports = exports['default'];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../icons":46,"prop-types":undefined}],39:[function(require,module,exports){
+},{"../icons":47,"prop-types":undefined}],40:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -3215,7 +3427,7 @@ PaginatedThumbnails.propTypes = {
 module.exports = exports['default'];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../theme":48,"./Arrow":34,"./Thumbnail":42,"aphrodite/no-important":8,"prop-types":undefined}],40:[function(require,module,exports){
+},{"../theme":49,"./Arrow":35,"./Thumbnail":43,"aphrodite/no-important":8,"prop-types":undefined}],41:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -3279,7 +3491,7 @@ exports['default'] = PassContext;
 module.exports = exports['default'];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"prop-types":undefined}],41:[function(require,module,exports){
+},{"prop-types":undefined}],42:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -3385,7 +3597,7 @@ Portal.contextTypes = {
 module.exports = exports['default'];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./PassContext":40,"prop-types":undefined,"react-addons-css-transition-group":undefined,"react-dom":undefined}],42:[function(require,module,exports){
+},{"./PassContext":41,"prop-types":undefined,"react-addons-css-transition-group":undefined,"react-dom":undefined}],43:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -3467,7 +3679,7 @@ exports['default'] = Thumbnail;
 module.exports = exports['default'];
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../theme":48,"../utils":52,"aphrodite/no-important":8,"prop-types":undefined}],43:[function(require,module,exports){
+},{"../theme":49,"../utils":53,"aphrodite/no-important":8,"prop-types":undefined}],44:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -3480,7 +3692,7 @@ exports["default"] = function (fill) {
 
 module.exports = exports["default"];
 
-},{}],44:[function(require,module,exports){
+},{}],45:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -3493,7 +3705,7 @@ exports["default"] = function (fill) {
 
 module.exports = exports["default"];
 
-},{}],45:[function(require,module,exports){
+},{}],46:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -3506,7 +3718,7 @@ exports["default"] = function (fill) {
 
 module.exports = exports["default"];
 
-},{}],46:[function(require,module,exports){
+},{}],47:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -3516,7 +3728,7 @@ module.exports = {
 	rotate: require('./rotate')
 };
 
-},{"./arrowLeft":43,"./arrowRight":44,"./close":45,"./rotate":47}],47:[function(require,module,exports){
+},{"./arrowLeft":44,"./arrowRight":45,"./close":46,"./rotate":48}],48:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -3529,7 +3741,7 @@ exports["default"] = function (fill) {
 
 module.exports = exports["default"];
 
-},{}],48:[function(require,module,exports){
+},{}],49:[function(require,module,exports){
 // ==============================
 // THEME
 // ==============================
@@ -3593,7 +3805,7 @@ theme.arrow = {
 
 module.exports = theme;
 
-},{}],49:[function(require,module,exports){
+},{}],50:[function(require,module,exports){
 /**
 	Bind multiple component methods:
 
@@ -3616,14 +3828,14 @@ module.exports = function bindFunctions(functions) {
 	});
 };
 
-},{}],50:[function(require,module,exports){
+},{}],51:[function(require,module,exports){
 // Return true if window + document
 
 'use strict';
 
 module.exports = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
 
-},{}],51:[function(require,module,exports){
+},{}],52:[function(require,module,exports){
 'use strict';
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -3650,7 +3862,7 @@ function deepMerge(target) {
 
 module.exports = deepMerge;
 
-},{}],52:[function(require,module,exports){
+},{}],53:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -3673,5 +3885,5 @@ module.exports = {
 	deepMerge: _deepMerge2['default']
 };
 
-},{"./bindFunctions":49,"./canUseDom":50,"./deepMerge":51}]},{},[33])(33)
+},{"./bindFunctions":50,"./canUseDom":51,"./deepMerge":52}]},{},[34])(34)
 });

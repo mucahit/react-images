@@ -285,22 +285,27 @@ class Lightbox extends Component {
 					<Swipeable onSwipedLeft={this.gotoNext} onSwipedRight={this.gotoPrev} />
 				*/}
 				<div className={css(classes.imageWrapper)}>
-					<img
-						className={css(classes.image)}
-						onClick={onClickImage ? onClickImage : this.props.zoom ? this.zoom : null}
-						alt={image.alt}
-						src={image.src}
-						srcSet={srcset}
-						style={{
-							cursor: this.props.zoom ? !this.state.isZoomed ? 'zoom-in' : 'zoom-out' : onClickImage ? 'pointer' : 'auto',
-							maxHeight: !this.state.isZoomed ? '630px' : '120vh',
-							maxWidth: !this.state.isZoomed ? '574px' : '120vh',
-							transform: !this.state.isZoomed ? `scale(1) rotate(${this.state.rotate}deg)` : `scale(1.4) rotate(${this.state.rotate}deg)`,
-							margin: this.state.margin,
-							transition: 'all .1s',
-							display: 'inline-block',
-						}}
-					/>
+					{
+						this.props.customMedia ?
+							this.props.customMedia
+						: 
+						<img
+							className={css(classes.image)}
+							onClick={onClickImage ? onClickImage : this.props.zoom ? this.zoom : null}
+							alt={image.alt}
+							src={image.src}
+							srcSet={srcset}
+							style={{
+								cursor: this.props.zoom ? !this.state.isZoomed ? 'zoom-in' : 'zoom-out' : onClickImage ? 'pointer' : 'auto',
+								maxHeight: !this.state.isZoomed ? '630px' : '120vh',
+								maxWidth: !this.state.isZoomed ? '574px' : '120vh',
+								transform: !this.state.isZoomed ? `scale(1) rotate(${this.state.rotate}deg)` : `scale(1.4) rotate(${this.state.rotate}deg)`,
+								margin: this.state.margin,
+								transition: 'all .1s',
+								display: 'inline-block',
+							}}
+						/>
+					}
 					{
 						this.props.content ? 
 							<figcaption

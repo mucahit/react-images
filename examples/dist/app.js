@@ -442,6 +442,7 @@ exports['default'] = Gallery;
 module.exports = exports['default'];
 
 },{"aphrodite/no-important":10,"react":undefined,"react-images":undefined}],3:[function(require,module,exports){
+(function (process){
 'use strict';
 
 var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i['return']) _i['return'](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError('Invalid attempt to destructure non-iterable instance'); } }; })();
@@ -471,10 +472,10 @@ var StyleSheet = {
             var key = _ref2[0];
             var val = _ref2[1];
 
+            var stringVal = JSON.stringify(val);
             return [key, {
-                // TODO(emily): Make a 'production' mode which doesn't prepend
-                // the class name here, to make the generated CSS smaller.
-                _name: key + '_' + (0, _util.hashObject)(val),
+                _len: stringVal.length,
+                _name: process.env.NODE_ENV === 'production' ? (0, _util.hashString)(stringVal) : key + '_' + (0, _util.hashString)(stringVal),
                 _definition: val
             }];
         });
@@ -593,7 +594,8 @@ selectorHandlers /* : SelectorHandler[] */
 };
 
 module.exports = makeExports;
-},{"./inject":5,"./util":9}],4:[function(require,module,exports){
+}).call(this,require('_process'))
+},{"./inject":5,"./util":9,"_process":34}],4:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -944,6 +946,7 @@ selectorHandlers /* : SelectorHandler[] */
 };
 exports.generateCSSRuleset = generateCSSRuleset;
 },{"../lib/staticPrefixData":8,"./ordered-elements":7,"./util":9,"inline-style-prefixer/static/createPrefixer":16}],5:[function(require,module,exports){
+(function (process){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1203,6 +1206,16 @@ result /* : ProcessedStyleDefinitions */
     }
 };
 
+// Sum up the lengths of the stringified style definitions (which was saved as _len property)
+// and use modulus to return a single byte hash value.
+// We append this extra byte to the 32bit hash to decrease the chance of hash collisions.
+var getStyleDefinitionsLengthHash = function getStyleDefinitionsLengthHash(styleDefinitions /* : any[] */) {
+    return (/* : string */(styleDefinitions.reduce(function (length, styleDefinition) {
+            return length + (styleDefinition ? styleDefinition._len : 0);
+        }, 0) % 36).toString(36)
+    );
+};
+
 /**
  * Inject styles associated with the passed style definition objects, and return
  * an associated CSS class name.
@@ -1228,14 +1241,21 @@ selectorHandlers /* : SelectorHandler[] */
     if (processedStyleDefinitions.classNameBits.length === 0) {
         return "";
     }
-    var className = processedStyleDefinitions.classNameBits.join("-o_O-");
+
+    var className = undefined;
+    if (process.env.NODE_ENV === 'production') {
+        className = processedStyleDefinitions.classNameBits.length === 1 ? '_' + processedStyleDefinitions.classNameBits[0] : '_' + (0, _util.hashString)(processedStyleDefinitions.classNameBits.join()) + getStyleDefinitionsLengthHash(styleDefinitions);
+    } else {
+        className = processedStyleDefinitions.classNameBits.join("-o_O-");
+    }
 
     injectStyleOnce(className, '.' + className, processedStyleDefinitions.definitionBits, useImportant, selectorHandlers);
 
     return className;
 };
 exports.injectAndGetClassName = injectAndGetClassName;
-},{"./generate":4,"./ordered-elements":7,"./util":9,"asap":11}],6:[function(require,module,exports){
+}).call(this,require('_process'))
+},{"./generate":4,"./ordered-elements":7,"./util":9,"_process":34,"asap":11}],6:[function(require,module,exports){
 
 // Module with the same interface as the core aphrodite module,
 // except that styles injected do not automatically have !important
@@ -1537,6 +1557,13 @@ prop /* : any */
 };
 
 exports.stringifyAndImportantifyValue = stringifyAndImportantifyValue;
+// Turn a string into a hash string of base-36 values (using letters and numbers)
+var hashString = function hashString(string /* : string */) {
+    return (/* string */(0, _stringHash2['default'])(string).toString(36)
+    );
+};
+
+exports.hashString = hashString;
 // Hash a javascript object using JSON.stringify. This is very fast, about 3
 // microseconds on my computer for a sample object:
 // http://jsperf.com/test-hashfnv32a-hash/5
@@ -1546,7 +1573,7 @@ exports.stringifyAndImportantifyValue = stringifyAndImportantifyValue;
 // ordering of objects. Ben Alpert says that Facebook depends on this, so we
 // can probably depend on this too.
 var hashObject = function hashObject(object /* : ObjectMap */) {
-    return (/* : string */(0, _stringHash2['default'])(JSON.stringify(object)).toString(36)
+    return (/* : string */hashString(JSON.stringify(object))
     );
 };
 
@@ -1563,7 +1590,7 @@ var importantify = function importantify(string /* : string */) {
         string[string.length - 10] === '!' && string.slice(-11) === ' !important' ? string : string + ' !important'
     );
 };
-},{"string-hash":34}],10:[function(require,module,exports){
+},{"string-hash":35}],10:[function(require,module,exports){
 module.exports = require('./lib/no-important.js');
 
 },{"./lib/no-important.js":6}],11:[function(require,module,exports){
@@ -1886,7 +1913,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = isPrefixedValue;
-
 var regex = /-webkit-|-moz-|-ms-/;
 
 function isPrefixedValue(value) {
@@ -2084,13 +2110,13 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = flex;
 var values = {
-  flex: true,
-  'inline-flex': true
+  flex: ['-webkit-box', '-moz-box', '-ms-flexbox', '-webkit-flex', 'flex'],
+  'inline-flex': ['-webkit-inline-box', '-moz-inline-box', '-ms-inline-flexbox', '-webkit-inline-flex', 'inline-flex']
 };
 
 function flex(property, value) {
   if (property === 'display' && values.hasOwnProperty(value)) {
-    return ['-webkit-box', '-moz-box', '-ms-' + value + 'box', '-webkit-' + value, value];
+    return values[value];
   }
 }
 module.exports = exports['default'];
@@ -2115,7 +2141,7 @@ var alternativeProps = {
   order: 'msFlexOrder',
   flexGrow: 'msFlexPositive',
   flexShrink: 'msFlexNegative',
-  flexBasis: 'msPreferredSize'
+  flexBasis: 'msFlexPreferredSize'
 };
 
 function flexboxIE(property, value, style) {
@@ -2443,6 +2469,192 @@ function prefixValue(plugins, property, value, style, metaData) {
 }
 module.exports = exports["default"];
 },{}],34:[function(require,module,exports){
+// shim for using process in browser
+var process = module.exports = {};
+
+// cached from whatever global is present so that test runners that stub it
+// don't break things.  But we need to wrap it in a try catch in case it is
+// wrapped in strict mode code which doesn't define any globals.  It's inside a
+// function because try/catches deoptimize in certain engines.
+
+var cachedSetTimeout;
+var cachedClearTimeout;
+
+function defaultSetTimout() {
+    throw new Error('setTimeout has not been defined');
+}
+function defaultClearTimeout () {
+    throw new Error('clearTimeout has not been defined');
+}
+(function () {
+    try {
+        if (typeof setTimeout === 'function') {
+            cachedSetTimeout = setTimeout;
+        } else {
+            cachedSetTimeout = defaultSetTimout;
+        }
+    } catch (e) {
+        cachedSetTimeout = defaultSetTimout;
+    }
+    try {
+        if (typeof clearTimeout === 'function') {
+            cachedClearTimeout = clearTimeout;
+        } else {
+            cachedClearTimeout = defaultClearTimeout;
+        }
+    } catch (e) {
+        cachedClearTimeout = defaultClearTimeout;
+    }
+} ())
+function runTimeout(fun) {
+    if (cachedSetTimeout === setTimeout) {
+        //normal enviroments in sane situations
+        return setTimeout(fun, 0);
+    }
+    // if setTimeout wasn't available but was latter defined
+    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+        cachedSetTimeout = setTimeout;
+        return setTimeout(fun, 0);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedSetTimeout(fun, 0);
+    } catch(e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+            return cachedSetTimeout.call(null, fun, 0);
+        } catch(e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+            return cachedSetTimeout.call(this, fun, 0);
+        }
+    }
+
+
+}
+function runClearTimeout(marker) {
+    if (cachedClearTimeout === clearTimeout) {
+        //normal enviroments in sane situations
+        return clearTimeout(marker);
+    }
+    // if clearTimeout wasn't available but was latter defined
+    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+        cachedClearTimeout = clearTimeout;
+        return clearTimeout(marker);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedClearTimeout(marker);
+    } catch (e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+            return cachedClearTimeout.call(null, marker);
+        } catch (e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+            return cachedClearTimeout.call(this, marker);
+        }
+    }
+
+
+
+}
+var queue = [];
+var draining = false;
+var currentQueue;
+var queueIndex = -1;
+
+function cleanUpNextTick() {
+    if (!draining || !currentQueue) {
+        return;
+    }
+    draining = false;
+    if (currentQueue.length) {
+        queue = currentQueue.concat(queue);
+    } else {
+        queueIndex = -1;
+    }
+    if (queue.length) {
+        drainQueue();
+    }
+}
+
+function drainQueue() {
+    if (draining) {
+        return;
+    }
+    var timeout = runTimeout(cleanUpNextTick);
+    draining = true;
+
+    var len = queue.length;
+    while(len) {
+        currentQueue = queue;
+        queue = [];
+        while (++queueIndex < len) {
+            if (currentQueue) {
+                currentQueue[queueIndex].run();
+            }
+        }
+        queueIndex = -1;
+        len = queue.length;
+    }
+    currentQueue = null;
+    draining = false;
+    runClearTimeout(timeout);
+}
+
+process.nextTick = function (fun) {
+    var args = new Array(arguments.length - 1);
+    if (arguments.length > 1) {
+        for (var i = 1; i < arguments.length; i++) {
+            args[i - 1] = arguments[i];
+        }
+    }
+    queue.push(new Item(fun, args));
+    if (queue.length === 1 && !draining) {
+        runTimeout(drainQueue);
+    }
+};
+
+// v8 likes predictible objects
+function Item(fun, array) {
+    this.fun = fun;
+    this.array = array;
+}
+Item.prototype.run = function () {
+    this.fun.apply(null, this.array);
+};
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+process.version = ''; // empty string to avoid regexp issues
+process.versions = {};
+
+function noop() {}
+
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+
+process.listeners = function (name) { return [] }
+
+process.binding = function (name) {
+    throw new Error('process.binding is not supported');
+};
+
+process.cwd = function () { return '/' };
+process.chdir = function (dir) {
+    throw new Error('process.chdir is not supported');
+};
+process.umask = function() { return 0; };
+
+},{}],35:[function(require,module,exports){
 "use strict";
 
 function hash(str) {
