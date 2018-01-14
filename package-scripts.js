@@ -15,15 +15,15 @@ module.exports = {
 			),
 			rollup: 'rollup --config',
 			babel: 'babel src -d lib',
-      less: series(
-        'lessc examples/src/example.less examples/dist/example.css'
-      ),
+			less: series(
+				'lessc examples/src/example.less examples/dist/example.css'
+			),
 		},
 		publish: {
 			default: series(
 				rimraf('examples/dist'),
 				'webpack --progress -p'
-				// 'git subtree push --prefix examples/dist origin gh-pages'
+				'git subtree push --prefix examples/dist origin gh-pages'
 			),
 		},
 	},
