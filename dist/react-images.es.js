@@ -1,14 +1,11 @@
-(function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('react'), require('prop-types'), require('aphrodite'), require('react-scrolllock'), require('aphrodite/no-important'), require('react-transition-group'), require('react-dom')) :
-	typeof define === 'function' && define.amd ? define(['react', 'prop-types', 'aphrodite', 'react-scrolllock', 'aphrodite/no-important', 'react-transition-group', 'react-dom'], factory) :
-	(global.Lightbox = factory(global.React,global.PropTypes,global.aphrodite,global.ScrollLock,global.aphrodite,global.ReactTransitionGroup,global.ReactDOM));
-}(this, (function (React,PropTypes,aphrodite,ScrollLock,noImportant,reactTransitionGroup,reactDom) { 'use strict';
-
-var React__default = 'default' in React ? React['default'] : React;
-PropTypes = PropTypes && PropTypes.hasOwnProperty('default') ? PropTypes['default'] : PropTypes;
-ScrollLock = ScrollLock && ScrollLock.hasOwnProperty('default') ? ScrollLock['default'] : ScrollLock;
-
-module.exports = require('./dist/index');
+import React, { Children, Component } from 'react';
+import PropTypes from 'prop-types';
+import { StyleSheet, css } from 'aphrodite';
+import ScrollLock from 'react-scrolllock';
+import { BounceLoader } from 'react-spinners';
+import { StyleSheet as StyleSheet$1, css as css$1 } from 'aphrodite/no-important';
+import { CSSTransitionGroup } from 'react-transition-group';
+import { render } from 'react-dom';
 
 // ==============================
 // THEME
@@ -329,7 +326,7 @@ var Icon = function Icon(_ref) {
 
 	var icon = icons[type];
 
-	return React__default.createElement('span', _extends({
+	return React.createElement('span', _extends({
 		dangerouslySetInnerHTML: { __html: icon(fill) }
 	}, props));
 };
@@ -350,17 +347,17 @@ function Arrow(_ref, _ref2) {
 	    size = _ref.size,
 	    props = objectWithoutProperties(_ref, ['direction', 'icon', 'onClick', 'size']);
 
-	var classes = noImportant.StyleSheet.create(deepMerge(defaultStyles$1, theme$$1));
+	var classes = StyleSheet$1.create(deepMerge(defaultStyles$1, theme$$1));
 
-	return React__default.createElement(
+	return React.createElement(
 		'button',
 		_extends({
 			type: 'button',
-			className: noImportant.css(classes.arrow, classes['arrow__direction__' + direction], size && classes['arrow__size__' + size]),
+			className: css$1(classes.arrow, classes['arrow__direction__' + direction], size && classes['arrow__size__' + size]),
 			onClick: onClick,
 			onTouchEnd: onClick
 		}, props),
-		React__default.createElement(Icon, { fill: !!theme$$1.arrow && theme$$1.arrow.fill || theme.arrow.fill, type: icon })
+		React.createElement(Icon, { fill: !!theme$$1.arrow && theme$$1.arrow.fill || theme.arrow.fill, type: icon })
 	);
 }
 
@@ -426,10 +423,10 @@ function Container(_ref, _ref2) {
 	var theme$$1 = _ref2.theme;
 	var props = objectWithoutProperties(_ref, []);
 
-	var classes = noImportant.StyleSheet.create(deepMerge(defaultStyles$2, theme$$1));
+	var classes = StyleSheet$1.create(deepMerge(defaultStyles$2, theme$$1));
 
-	return React__default.createElement('div', _extends({ id: 'lightboxBackdrop',
-		className: noImportant.css(classes.container)
+	return React.createElement('div', _extends({ id: 'lightboxBackdrop',
+		className: css$1(classes.container)
 	}, props));
 }
 
@@ -468,24 +465,24 @@ function Footer(_ref, _ref2) {
 
 	if (!caption && !showCount) return null;
 
-	var classes = noImportant.StyleSheet.create(deepMerge(defaultStyles$3, theme$$1));
+	var classes = StyleSheet$1.create(deepMerge(defaultStyles$3, theme$$1));
 
-	var imageCount = showCount ? React__default.createElement(
+	var imageCount = showCount ? React.createElement(
 		'div',
-		{ className: noImportant.css(classes.footerCount) },
+		{ className: css$1(classes.footerCount) },
 		countCurrent,
 		countSeparator,
 		countTotal
-	) : React__default.createElement('span', null);
+	) : React.createElement('span', null);
 
-	return React__default.createElement(
+	return React.createElement(
 		'div',
-		_extends({ className: noImportant.css(classes.footer) }, props),
-		caption ? React__default.createElement(
+		_extends({ className: css$1(classes.footer) }, props),
+		caption ? React.createElement(
 			'figcaption',
-			{ className: noImportant.css(classes.footerCaption) },
+			{ className: css$1(classes.footerCaption) },
 			caption
-		) : React__default.createElement('span', null),
+		) : React.createElement('span', null),
 		imageCount
 	);
 }
@@ -536,29 +533,29 @@ function Header(_ref, _ref2) {
 	    rotateButtonTitle = _ref.rotateButtonTitle,
 	    props = objectWithoutProperties(_ref, ['customControls', 'onClose', 'onRotate', 'showCloseButton', 'showRotateButton', 'closeButtonTitle', 'rotateButtonTitle']);
 
-	var classes = noImportant.StyleSheet.create(deepMerge(defaultStyles$4, theme$$1));
+	var classes = StyleSheet$1.create(deepMerge(defaultStyles$4, theme$$1));
 
-	return React__default.createElement(
+	return React.createElement(
 		'div',
-		_extends({ className: noImportant.css(classes.header) }, props),
-		!!showRotateButton && React__default.createElement(
+		_extends({ className: css$1(classes.header) }, props),
+		!!showRotateButton && React.createElement(
 			'button',
 			{
 				title: rotateButtonTitle,
-				className: noImportant.css(classes.close),
+				className: css$1(classes.close),
 				onClick: onRotate
 			},
-			React__default.createElement(Icon, { fill: !!theme$$1.rotate && theme$$1.rotate.fill || theme.rotate.fill, type: 'rotate' })
+			React.createElement(Icon, { fill: !!theme$$1.rotate && theme$$1.rotate.fill || theme.rotate.fill, type: 'rotate' })
 		),
-		customControls ? customControls : React__default.createElement('span', null),
-		!!showCloseButton && React__default.createElement(
+		customControls ? customControls : React.createElement('span', null),
+		!!showCloseButton && React.createElement(
 			'button',
 			{
 				title: closeButtonTitle,
-				className: noImportant.css(classes.close),
+				className: css$1(classes.close),
 				onClick: onClose
 			},
-			React__default.createElement(Icon, { fill: !!theme$$1.close && theme$$1.close.fill || theme.close.fill, type: 'close' })
+			React.createElement(Icon, { fill: !!theme$$1.close && theme$$1.close.fill || theme.close.fill, type: 'close' })
 		)
 	);
 }
@@ -605,10 +602,10 @@ function Thumbnail(_ref, _ref2) {
 	var theme$$1 = _ref2.theme;
 
 	var url = thumbnail ? thumbnail : src;
-	var classes = noImportant.StyleSheet.create(deepMerge(defaultStyles$5, theme$$1));
+	var classes = StyleSheet$1.create(deepMerge(defaultStyles$5, theme$$1));
 
-	return React__default.createElement('div', {
-		className: noImportant.css(classes.thumbnail, active && classes.thumbnail__active),
+	return React.createElement('div', {
+		className: css$1(classes.thumbnail, active && classes.thumbnail__active),
 		onClick: function onClick(e) {
 			e.preventDefault();
 			e.stopPropagation();
@@ -648,7 +645,7 @@ var defaultStyles$5 = {
 	}
 };
 
-var classes = noImportant.StyleSheet.create({
+var classes = StyleSheet$1.create({
 	paginatedThumbnails: {
 		bottom: theme.container.gutter.vertical,
 		height: theme.thumbnail.size,
@@ -767,7 +764,7 @@ var PaginatedThumbnails = function (_Component) {
 		value: function renderArrowPrev() {
 			if (this.getFirst() <= 0) return null;
 
-			return React__default.createElement(Arrow, {
+			return React.createElement(Arrow, {
 				direction: 'left',
 				size: 'small',
 				icon: 'arrowLeft',
@@ -787,7 +784,7 @@ var PaginatedThumbnails = function (_Component) {
 			var totalCount = 2 * offset + 1;
 			if (this.getFirst() + totalCount >= images.length) return null;
 
-			return React__default.createElement(Arrow, {
+			return React.createElement(Arrow, {
 				direction: 'right',
 				size: 'small',
 				icon: 'arrowRight',
@@ -818,12 +815,12 @@ var PaginatedThumbnails = function (_Component) {
 				thumbnails = images.slice(baseOffset, baseOffset + totalCount);
 			}
 
-			return React__default.createElement(
+			return React.createElement(
 				'div',
-				{ className: noImportant.css(classes.paginatedThumbnails) },
+				{ className: css$1(classes.paginatedThumbnails) },
 				this.renderArrowPrev(),
 				thumbnails.map(function (img, idx) {
-					return React__default.createElement(Thumbnail, _extends({ key: baseOffset + idx
+					return React.createElement(Thumbnail, _extends({ key: baseOffset + idx
 					}, img, {
 						index: baseOffset + idx,
 						onClick: onClickThumbnail,
@@ -834,7 +831,7 @@ var PaginatedThumbnails = function (_Component) {
 		}
 	}]);
 	return PaginatedThumbnails;
-}(React.Component);
+}(Component);
 
 PaginatedThumbnails.propTypes = {
 	currentImage: PropTypes.number,
@@ -862,11 +859,11 @@ var PassContext = function (_Component) {
 	}, {
 		key: 'render',
 		value: function render$$1() {
-			return React.Children.only(this.props.children);
+			return Children.only(this.props.children);
 		}
 	}]);
 	return PassContext;
-}(React.Component);
+}(Component);
 
 PassContext.propTypes = {
 	context: PropTypes.object.isRequired
@@ -902,18 +899,18 @@ var Portal = function (_Component) {
 			var duration = 200;
 			var styles = '\n\t\t\t\t.fade-enter { opacity: 0.01; }\n\t\t\t\t.fade-enter.fade-enter-active { opacity: 1; transition: opacity ' + duration + 'ms; }\n\t\t\t\t.fade-leave { opacity: 1; }\n\t\t\t\t.fade-leave.fade-leave-active { opacity: 0.01; transition: opacity ' + duration + 'ms; }\n\t\t';
 
-			reactDom.render(React__default.createElement(
+			render(React.createElement(
 				PassContext,
 				{ context: this.context },
-				React__default.createElement(
+				React.createElement(
 					'div',
 					null,
-					React__default.createElement(
+					React.createElement(
 						'style',
 						null,
 						styles
 					),
-					React__default.createElement(reactTransitionGroup.CSSTransitionGroup, _extends({
+					React.createElement(CSSTransitionGroup, _extends({
 						component: 'div',
 						transitionName: 'fade',
 						transitionEnterTimeout: duration,
@@ -934,7 +931,7 @@ var Portal = function (_Component) {
 		}
 	}]);
 	return Portal;
-}(React.Component);
+}(Component);
 
 Portal.contextTypes = {
 	theme: PropTypes.object.isRequired
@@ -973,7 +970,7 @@ var Lightbox = function (_Component) {
 		var _this = possibleConstructorReturn(this, (Lightbox.__proto__ || Object.getPrototypeOf(Lightbox)).call(this, props));
 
 		_this.theme = deepMerge(theme, props.theme);
-		_this.classes = aphrodite.StyleSheet.create(deepMerge(defaultStyles, _this.theme));
+		_this.classes = StyleSheet.create(deepMerge(defaultStyles, _this.theme));
 		_this.state = { imageLoaded: false, rotate: 0, isZoomed: false };
 
 		bindFunctions.call(_this, ['gotoNext', 'gotoPrev', 'rotate', 'zoom', 'closeBackdrop', 'handleKeyboardInput', 'handleImageLoaded']);
@@ -1201,7 +1198,7 @@ var Lightbox = function (_Component) {
 		value: function renderArrowPrev() {
 			if (this.props.currentImage === 0) return null;
 
-			return React__default.createElement(Arrow, {
+			return React.createElement(Arrow, {
 				direction: 'left',
 				icon: 'arrowLeft',
 				onClick: this.gotoPrev,
@@ -1214,7 +1211,7 @@ var Lightbox = function (_Component) {
 		value: function renderArrowNext() {
 			if (this.props.currentImage === this.props.images.length - 1) return null;
 
-			return React__default.createElement(Arrow, {
+			return React.createElement(Arrow, {
 				direction: 'right',
 				icon: 'arrowRight',
 				onClick: this.gotoNext,
@@ -1233,26 +1230,26 @@ var Lightbox = function (_Component) {
 			var imageLoaded = this.state.imageLoaded;
 
 
-			if (!isOpen) return React__default.createElement('span', { key: 'closed' });
+			if (!isOpen) return React.createElement('span', { key: 'closed' });
 
 			var offsetThumbnails = 0;
 			if (showThumbnails) {
 				offsetThumbnails = this.theme.thumbnail.size + this.theme.container.gutter.vertical;
 			}
 
-			return React__default.createElement(
+			return React.createElement(
 				Container,
 				{
 					key: 'open',
 					onClick: backdropClosesModal && this.closeBackdrop,
 					onTouchEnd: backdropClosesModal && this.closeBackdrop
 				},
-				React__default.createElement(
+				React.createElement(
 					'div',
 					null,
-					React__default.createElement(
+					React.createElement(
 						'div',
-						{ className: aphrodite.css(this.classes.content), style: { marginBottom: offsetThumbnails, maxWidth: width } },
+						{ className: css(this.classes.content), style: { marginBottom: offsetThumbnails, maxWidth: width } },
 						imageLoaded && this.renderHeader(),
 						this.renderImages(),
 						this.renderSpinner(),
@@ -1261,7 +1258,7 @@ var Lightbox = function (_Component) {
 					imageLoaded && this.renderThumbnails(),
 					imageLoaded && this.renderArrowPrev(),
 					imageLoaded && this.renderArrowNext(),
-					React__default.createElement(ScrollLock, null)
+					React.createElement(ScrollLock, null)
 				)
 			);
 		}
@@ -1286,14 +1283,14 @@ var Lightbox = function (_Component) {
 				
 			}
 
-			return React__default.createElement(
+			return React.createElement(
 				'figure',
-				{ className: aphrodite.css(this.classes.figure) },
-				React__default.createElement(
+				{ className: css(this.classes.figure) },
+				React.createElement(
 					'div',
-					{ className: aphrodite.css(this.classes.imageWrapper) },
-					this.props.customMedia ? this.props.customMedia : React__default.createElement('img', {
-						className: aphrodite.css(this.classes.image, imageLoaded && this.classes.imageLoaded),
+					{ className: css(this.classes.imageWrapper) },
+					this.props.customMedia ? this.props.customMedia : React.createElement('img', {
+						className: css(this.classes.image, imageLoaded && this.classes.imageLoaded),
 						onClick: onClickImage ? onClickImage : this.props.zoom ? this.zoom : null,
 						alt: image.alt,
 						src: image.src,
@@ -1308,10 +1305,10 @@ var Lightbox = function (_Component) {
 							display: 'inline-block'
 						}
 					}),
-					this.props.content ? React__default.createElement(
+					this.props.content ? React.createElement(
 						'figcaption',
 						{
-							className: aphrodite.css(this.classes.figcaption),
+							className: css(this.classes.figcaption),
 							style: {
 								display: !this.state.isZoomed ? 'inline-block' : 'none'
 							},
@@ -1335,7 +1332,7 @@ var Lightbox = function (_Component) {
 
 			if (!showThumbnails) return;
 
-			return React__default.createElement(PaginatedThumbnails, {
+			return React.createElement(PaginatedThumbnails, {
 				currentImage: currentImage,
 				images: images,
 				offset: thumbnailOffset,
@@ -1354,7 +1351,7 @@ var Lightbox = function (_Component) {
 			    rotateButtonTitle = _props5.rotateButtonTitle;
 
 
-			return React__default.createElement(Header, {
+			return React.createElement(Header, {
 				customControls: customControls,
 				onClose: onClose,
 				showCloseButton: showCloseButton,
@@ -1376,7 +1373,7 @@ var Lightbox = function (_Component) {
 
 			if (!images || !images.length) return null;
 
-			return React__default.createElement(Footer, {
+			return React.createElement(Footer, {
 				caption: images[currentImage].caption,
 				countCurrent: currentImage + 1,
 				countSeparator: imageCountSeparator,
@@ -1395,10 +1392,10 @@ var Lightbox = function (_Component) {
 
 			var Spinner = spinner;
 
-			return React__default.createElement(
+			return React.createElement(
 				'div',
-				{ className: aphrodite.css(this.classes.spinner, !imageLoaded && this.classes.spinnerActive) },
-				React__default.createElement(Spinner, {
+				{ className: css(this.classes.spinner, !imageLoaded && this.classes.spinnerActive) },
+				React.createElement(Spinner, {
 					color: spinnerColor,
 					size: spinnerSize
 				})
@@ -1407,7 +1404,7 @@ var Lightbox = function (_Component) {
 	}, {
 		key: 'render',
 		value: function render$$1() {
-			return React__default.createElement(
+			return React.createElement(
 				Portal,
 				null,
 				this.renderDialog()
@@ -1415,10 +1412,10 @@ var Lightbox = function (_Component) {
 		}
 	}]);
 	return Lightbox;
-}(React.Component);
+}(Component);
 
 var DefaultSpinner = function DefaultSpinner(props) {
-	return React__default.createElement(undefined, props);
+	return React.createElement(BounceLoader, props);
 };
 
 Lightbox.propTypes = {
@@ -1531,6 +1528,4 @@ var defaultStyles = {
 	}
 };
 
-return Lightbox;
-
-})));
+export default Lightbox;

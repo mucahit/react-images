@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { css, StyleSheet } from 'aphrodite/no-important';
 
 import defaults from '../theme';
-import { deepMerge } from '../utils';
+import deepMerge from '../utils/deepMerge';
 import Icon from './Icon';
 
 function Header ({
@@ -25,7 +25,7 @@ function Header ({
 			{!!showRotateButton && (
 				<button
 					title={rotateButtonTitle}
-					className={css(classes.rotate)}
+					className={css(classes.close)}
 					onClick={onRotate}
 				>
 					<Icon fill={!!theme.rotate && theme.rotate.fill || defaults.rotate.fill} type="rotate" />
@@ -43,7 +43,7 @@ function Header ({
 			)}
 		</div>
 	);
-};
+}
 
 Header.propTypes = {
 	customControls: PropTypes.array,
@@ -70,26 +70,12 @@ const defaultStyles = {
 		verticalAlign: 'bottom',
 
 		// increase hit area
-		height: defaults.close.height + 20,
+		height: 40,
 		marginRight: -10,
 		padding: 10,
-		width: defaults.close.width + 20,
+		width: 40,
 	},
-	rotate: {
-		background: 'none',
-		border: 'none',
-		cursor: 'pointer',
-		outline: 'none',
-		position: 'relative',
-		top: 0,
-		verticalAlign: 'bottom',
-
-		// increase hit area
-		height: defaults.close.height + 20,
-		marginLeft: -10,
-		padding: 10,
-		width: defaults.close.width + 20,
-	},
+	rotate: {},
 };
 
-module.exports = Header;
+export default Header;

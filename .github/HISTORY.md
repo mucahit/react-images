@@ -1,5 +1,37 @@
 # React-Images
 
+### v0.5.13 / 2017-11-29
+- change srcset to srcSet to fix intermittent warning: Invalid DOM property `srcset`. Did you mean `srcSet`?
+
+### v0.5.12 / 2017-11-29
+-  Fix React warning issue #171 thanks to [kachkaev] (https://github.com/(https://github.com/smeijer)
+
+### v0.5.10 / 2017-10-18
+- New build
+
+### v0.5.8 / 2017-10-06
+- Incorrect peer dependency in package.json file
+
+### v0.5.7 / 2017-10-04
+- Fix warnings for React 16.0.0 and update dependencies
+
+### v0.5.6 / 2017-09-20
+- Update: Let user pass in srcSet as prop in addition to srcset thanks to [smeijer](https://github.com/smeijer)
+- Fix: default arrow bg color is none
+- Fix: make content div, figure, image respond to theme props #127
+- Fix: caption extending and disabling backdropClosesModal click issue #156
+- Fix: alignment in safari issue #105
+
+### v0.5.5 / 2017-07-28
+- Fix: let user override all possible properties with theme object thanks to [clintharris](https://github.com/clintharris)
+- Fix: clicking on image closes lightbox when backdropClosesModal is set to true #152
+- Fix: clicking close lightbox button fired onClose handler twice #155
+
+### v0.5.4 / 2017-05-31
+- Update: separate out prop-types for React 16 thanks to [hiyamamo](https:github.com/hiyamamo)
+- Update: update react-addons-css-transition-group to react-transition-group thanks to [neptunian](https://github.com/neptunian)
+- Fix: React warnings in React v15.5.0
+
 ### v0.5.2 / 2016-11-17
 - Fix: keydown listeners thanks to [aknuds1](https:github.com/aknuds1) [archr](https:github.com/archr)
 - Fix: thumbnail click propagation thanks to [GregoryPotdevin](https://github.com/GregoryPotdevin)

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { css, StyleSheet } from 'aphrodite/no-important';
 
 import defaults from '../theme';
-import { deepMerge } from '../utils';
+import deepMerge from '../utils/deepMerge';
 import Icon from './Icon';
 
 function Arrow ({
@@ -29,7 +29,7 @@ function Arrow ({
 			<Icon fill={!!theme.arrow && theme.arrow.fill || defaults.arrow.fill} type={icon} />
 		</button>
 	);
-};
+}
 
 Arrow.propTypes = {
 	direction: PropTypes.oneOf(['left', 'right']),
@@ -60,7 +60,7 @@ const defaultStyles = {
 		userSelect: 'none',
 	},
 
-	// sizees
+	// sizes
 	arrow__size__medium: {
 		height: defaults.arrow.height,
 		marginTop: defaults.arrow.height / -2,
@@ -89,4 +89,4 @@ const defaultStyles = {
 	},
 };
 
-module.exports = Arrow;
+export default Arrow;

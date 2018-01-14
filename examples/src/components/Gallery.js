@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { css, StyleSheet } from 'aphrodite/no-important';
 import Lightbox from 'react-images';
 
@@ -90,17 +91,21 @@ class Gallery extends Component {
 					onClickThumbnail={this.gotoImage}
 					onClose={this.closeLightbox}
 					showThumbnails={this.props.showThumbnails}
+					spinner={this.props.spinner}
+					spinnerColor={this.props.spinnerColor}
+					spinnerSize={this.props.spinnerSize}
 					theme={this.props.theme}
 					backdropClosesModal={true}
 					zoom={1}
 					content={1}
+                    showRotateButton={true}
 				>
 				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime ipsum dolores ut incidunt perspiciatis dignissimos culpa consequatur ducimus quia, asperiores aliquam earum error nulla ipsam a similique, aut et rerum?</p>
 				</Lightbox>
 			</div>
 		);
 	}
-};
+}
 
 Gallery.displayName = 'Gallery';
 Gallery.propTypes = {

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { css, StyleSheet } from 'aphrodite/no-important';
 import defaults from '../theme';
-import { deepMerge } from '../utils';
+import deepMerge from '../utils/deepMerge';
 
 function Footer ({
 	caption,
@@ -36,7 +36,7 @@ function Footer ({
 			{imageCount}
 		</div>
 	);
-};
+}
 
 Footer.propTypes = {
 	caption: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
@@ -73,4 +73,4 @@ const defaultStyles = {
 	},
 };
 
-module.exports = Footer;
+export default Footer;

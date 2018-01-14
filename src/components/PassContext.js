@@ -11,7 +11,7 @@ class PassContext extends Component {
 	render () {
 		return Children.only(this.props.children);
 	}
-};
+}
 
 PassContext.propTypes = {
 	context: PropTypes.object.isRequired,

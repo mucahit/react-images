@@ -20,8 +20,6 @@ theme.header = {
 };
 theme.close = {
 	fill: 'white',
-	height: 20,
-	width: 20,
 };
 theme.rotate = {
 	fill: 'white',
@@ -52,10 +50,10 @@ theme.thumbnail = {
 
 // arrow
 theme.arrow = {
-	background: 'black',
+	background: 'none',
 	fill: 'white',
 	height: 120,
 };
 
 
-module.exports = theme;
+export default theme;

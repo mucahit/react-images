@@ -3,18 +3,18 @@ import PropTypes from 'prop-types';
 import { css, StyleSheet } from 'aphrodite/no-important';
 
 import defaults from '../theme';
-import { deepMerge } from '../utils';
+import deepMerge from '../utils/deepMerge';
 
 function Container ({ ...props }, { theme }) {
 	const classes = StyleSheet.create(deepMerge(defaultStyles, theme));
 
 	return (
-		<div
+		<div id="lightboxBackdrop"
 			className={css(classes.container)}
 			{...props}
 		/>
 	);
-};
+}
 
 Container.contextTypes = {
 	theme: PropTypes.object.isRequired,
@@ -40,4 +40,4 @@ const defaultStyles = {
 	},
 };
 
-module.exports = Container;
+export default Container;

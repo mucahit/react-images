@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Transition from 'react-addons-css-transition-group';
+import { CSSTransitionGroup } from 'react-transition-group';
 import { render } from 'react-dom';
 import PassContext from './PassContext';
 
@@ -30,7 +30,7 @@ export default class Portal extends Component {
 			<PassContext context={this.context}>
 				<div>
 					<style>{styles}</style>
-					<Transition
+					<CSSTransitionGroup
 						component="div"
 						transitionName="fade"
 						transitionEnterTimeout={duration}

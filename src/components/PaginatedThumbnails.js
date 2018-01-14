@@ -14,6 +14,8 @@ const classes = StyleSheet.create({
 		position: 'absolute',
 		textAlign: 'center',
 		whiteSpace: 'nowrap',
+		left: '50%',
+		transform: 'translateX(-50%)',
 	},
 });
 
@@ -119,7 +121,7 @@ export default class PaginatedThumbnails extends Component {
 				icon="arrowRight"
 				onClick={this.gotoNext}
 				style={arrowStyles}
-				title="Previous (Right arrow key)"
+				title="Next (Right arrow key)"
 				type="button"
 			/>
 		);

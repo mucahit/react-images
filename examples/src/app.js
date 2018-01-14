@@ -1,6 +1,8 @@
 import React from 'react';
 import { render } from 'react-dom';
+import { RingLoader } from 'react-spinners';
 import Gallery from './components/Gallery';
+import './example.less';
 
 function makeUnsplashSrc (id) {
 	return `https://images.unsplash.com/photo-${id}?dpr=2&auto=format&w=1024&h=1024`;
@@ -49,7 +51,9 @@ const THUMBNAIL_IMAGES = [
 
 const theme = {
 	// container
-	container: { background: 'rgba(255, 255, 255, 0.9)' },
+	container: {
+		background: 'rgba(255, 255, 255, 0.9)',
+	},
 
 	// arrows
 	arrow: {
@@ -74,13 +78,10 @@ const theme = {
 	},
 	arrow__direction__left: { marginLeft: 10 },
 	arrow__direction__right: { marginRight: 10 },
-
-	// header
 	close: {
 		fill: '#D40000',
 		opacity: 0.6,
 		transition: 'all 200ms',
-
 		':hover': {
 			opacity: 1,
 		},
@@ -111,7 +112,7 @@ render(
 		<Gallery images={DEFAULT_IMAGES.map(({ caption, id, orientation, useForDemo }) => ({
 			src: makeUnsplashSrc(id),
 			thumbnail: makeUnsplashThumbnail(id, orientation),
-			srcset: [
+			srcSet: [
 				makeUnsplashSrcSet(id, 1024),
 				makeUnsplashSrcSet(id, 800),
 				makeUnsplashSrcSet(id, 500),
@@ -126,7 +127,7 @@ render(
 		<Gallery images={THUMBNAIL_IMAGES.map(({ caption, id, orientation, useForDemo }) => ({
 			src: makeUnsplashSrc(id),
 			thumbnail: makeUnsplashThumbnail(id, orientation),
-			srcset: [
+			srcSet: [
 				makeUnsplashSrcSet(id, 1024),
 				makeUnsplashSrcSet(id, 800),
 				makeUnsplashSrcSet(id, 500),
@@ -141,7 +142,7 @@ render(
 		<Gallery images={THEMED_IMAGES.map(({ caption, id, orientation, useForDemo }) => ({
 			src: makeUnsplashSrc(id),
 			thumbnail: makeUnsplashThumbnail(id, orientation),
-			srcset: [
+			srcSet: [
 				makeUnsplashSrcSet(id, 1024),
 				makeUnsplashSrcSet(id, 800),
 				makeUnsplashSrcSet(id, 500),
@@ -150,7 +151,13 @@ render(
 			caption,
 			orientation,
 			useForDemo,
-		}))} theme={theme} showThumbnails />
+		}))}
+			theme={theme}
+			spinner={RingLoader}
+			spinnerColor={'#D40000'}
+			spinnerSize={50}
+			showThumbnails
+	/>
 	</div>,
 	document.getElementById('example')
 );
