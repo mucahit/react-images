@@ -1298,7 +1298,7 @@ var Lightbox = function (_Component) {
 						style: {
 							cursor: this.props.zoom ? !this.state.isZoomed ? 'zoom-in' : 'zoom-out' : onClickImage ? 'pointer' : 'auto',
 							maxHeight: !this.state.isZoomed ? '630px' : '120vh',
-							maxWidth: !this.state.isZoomed ? '574px' : '120vh',
+							maxWidth: !this.state.isZoomed ? '574px !important' : '90vh !important',
 							transform: !this.state.isZoomed ? 'scale(1) rotate(' + this.state.rotate + 'deg)' : 'scale(1.4) rotate(' + this.state.rotate + 'deg)',
 							margin: this.state.margin,
 							transition: 'all .3s',
