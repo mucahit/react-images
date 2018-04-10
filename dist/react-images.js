@@ -973,7 +973,6 @@ var Lightbox = function (_Component) {
 		var _this = possibleConstructorReturn(this, (Lightbox.__proto__ || Object.getPrototypeOf(Lightbox)).call(this, props));
 
 		_this.theme = deepMerge(theme, props.theme);
-		_this.classes = aphrodite.StyleSheet.create(deepMerge(defaultStyles, _this.theme));
 		_this.state = { imageLoaded: false, rotate: 0, isZoomed: false };
 
 		bindFunctions.call(_this, ['gotoNext', 'gotoPrev', 'rotate', 'zoom', 'closeBackdrop', 'handleKeyboardInput', 'handleImageLoaded']);
@@ -1297,16 +1296,7 @@ var Lightbox = function (_Component) {
 						onClick: onClickImage ? onClickImage : this.props.zoom ? this.zoom : null,
 						alt: image.alt,
 						src: image.src,
-						srcSet: srcSet,
-						style: {
-							cursor: this.props.zoom ? !this.state.isZoomed ? 'zoom-in' : 'zoom-out' : onClickImage ? 'pointer' : 'auto',
-							maxHeight: !this.state.isZoomed ? '630px' : '120vh',
-							maxWidth: !this.state.isZoomed ? '574px !important' : '90vh !important',
-							transform: !this.state.isZoomed ? 'scale(1) rotate(' + this.state.rotate + 'deg)' : 'scale(1.4) rotate(' + this.state.rotate + 'deg)',
-							margin: this.state.margin,
-							transition: 'all .3s',
-							display: 'inline-block'
-						}
+						srcSet: srcSet
 					}),
 					this.props.content ? React__default.createElement(
 						'figcaption',
@@ -1413,6 +1403,28 @@ var Lightbox = function (_Component) {
 				this.renderDialog()
 			);
 		}
+	}, {
+		key: 'classes',
+		get: function get$$1() {
+			var _props8 = this.props,
+			    zoom = _props8.zoom,
+			    onClickImage = _props8.onClickImage;
+			var _state = this.state,
+			    isZoomed = _state.isZoomed,
+			    margin = _state.margin,
+			    rotate = _state.rotate;
+
+
+			defaultStyles.image = _extends({}, defaultStyles.image, {
+				cursor: zoom ? !isZoomed ? 'zoom-in' : 'zoom-out' : onClickImage ? 'pointer' : 'auto',
+				maxHeight: !isZoomed ? '630px' : '120vh',
+				maxWidth: !isZoomed ? '574px' : '120vh',
+				transform: !isZoomed ? 'scale(1) rotate(' + rotate + 'deg)' : 'scale(1.4) rotate(' + rotate + 'deg)',
+				margin: margin
+			});
+
+			return aphrodite.StyleSheet.create(deepMerge(defaultStyles, this.theme));
+		}
 	}]);
 	return Lightbox;
 }(React.Component);
@@ -1496,7 +1508,6 @@ var defaultStyles = {
 		height: 'auto',
 		marginLeft: 'auto', // maintain center on very short screens OR very narrow image
 		marginRight: 'auto', // maintain center on very short screens OR very narrow image
-		maxWidth: '100%',
 
 		// disable user select
 		WebkitTouchCallout: 'none',

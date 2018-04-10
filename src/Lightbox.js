@@ -21,7 +21,6 @@ class Lightbox extends Component {
 		super(props);
 
 		this.theme = deepMerge(defaultTheme, props.theme);
-		this.classes = StyleSheet.create(deepMerge(defaultStyles, this.theme));
 		this.state = { imageLoaded: false, rotate: 0, isZoomed: false };
 
 		bindFunctions.call(this, [
@@ -108,6 +107,21 @@ class Lightbox extends Component {
 	// METHODS
 	// ==============================
 
+    get classes () {
+        const { zoom, onClickImage } = this.props;
+        const { isZoomed, margin, rotate } = this.state;
+
+        defaultStyles.image = {
+            ...defaultStyles.image,
+            cursor: zoom ? !isZoomed ? 'zoom-in' : 'zoom-out' : onClickImage ? 'pointer' : 'auto',
+            maxHeight: !isZoomed ? '630px' : '120vh',
+            maxWidth: !isZoomed ? '574px' : '120vh',
+            transform: !isZoomed ? `scale(1) rotate(${rotate}deg)` : `scale(1.4) rotate(${rotate}deg)`,
+            margin: margin,
+        };
+
+        return StyleSheet.create(deepMerge(defaultStyles, this.theme));
+    }
 	preloadImage (idx, onload) {
 		const image = this.props.images[idx];
 		if (!image) return;
@@ -326,15 +340,6 @@ class Lightbox extends Component {
 							alt={image.alt}
 							src={image.src}
 							srcSet={srcSet}
-							style={{
-								cursor: this.props.zoom ? !this.state.isZoomed ? 'zoom-in' : 'zoom-out' : onClickImage ? 'pointer' : 'auto',
-								maxHeight: !this.state.isZoomed ? '630px' : '120vh',
-								maxWidth: !this.state.isZoomed ? '574px !important' : '90vh !important',
-								transform: !this.state.isZoomed ? `scale(1) rotate(${this.state.rotate}deg)` : `scale(1.4) rotate(${this.state.rotate}deg)`,
-								margin: this.state.margin,
-								transition: 'all .3s',
-								display: 'inline-block',
-							}}
 						/>
 
 					}
@@ -520,7 +525,6 @@ const defaultStyles = {
 		height: 'auto',
 		marginLeft: 'auto', // maintain center on very short screens OR very narrow image
 		marginRight: 'auto', // maintain center on very short screens OR very narrow image
-		maxWidth: '100%',
 
 		// disable user select
 		WebkitTouchCallout: 'none',
